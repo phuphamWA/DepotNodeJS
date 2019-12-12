@@ -25,15 +25,15 @@ export  const Product = (props) => {
 
     const fetching = async (ProductID) => {
 
-        await axios.get("http://localhost:7000/catalog-api/products/offerings/" + ProductID).then((res) => {
-          //  console.log(res.data[0]);
-            setProductName(res.data[0].product_name);
-            setUnitCost(res.data[0].unit_retail);
-            setVender(res.data[0].supplier_name);
-            setDescription(res.data[0].long_description);
+        await axios.get("http://localhost:3001/products/" + ProductID).then((res) => {
+            console.log(res.data);
+            setProductName(res.data.product_name);
+            setUnitCost((Math.round(res.data.Unit_retail * 100) / 100).toFixed(2));
+            setVender(res.data.supplier_name);
+            setDescription(res.data.long_description);
         })
     }
-    
+    // (Math.round(res.data.retail * 100) / 100).toFixed(2) }
     const page_title = (
 
         <div className="mt-4 justify-center w-full h-auto md:h-auto">

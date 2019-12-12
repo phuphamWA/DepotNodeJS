@@ -23,23 +23,34 @@ MongoClient.connect(url, function (err, db) {
 
         TotalItem = LeastRetail.length-1;
         db.close();
-     //     sortListPriceUp.sort((a, b) => { return (a.Unit_retail - b.Unit_retail); });
-     //   sortListPriceDown = LeastRetail.sort((a, b) => { return (b.Unit_retail - a.Unit_retail); });
-       
     });
 
 });
-
+const sortingPriceFunction = (array, option) => {
+       
+    var newArray = [];
+    if (option === "priceUp")
+        newArray = array.sort((a, b) => { return (a.Unit_retail - b.Unit_retail); });
+    else if (option === "priceDown") 
+        newArray = array.sort((a, b) => { return (b.Unit_retail - a.Unit_retail); });
+    else if (option === "alphabetUp")
+        newArray = array.sort((a, b) => {
+            if (a.product_name > b.product_name)
+                return 1;
+            if (a.product_name < b.product_name)
+                return -1;
+            return 0;
+        });
+    return (newArray);
+};
 const ReqResInBrowsing = (request, array) => {
     console.log(request.params.item);
     console.log(request.params.pageNumber);
-    console.log(TotalItem);
     var PageNeed = Math.round(TotalItem / request.params.item);
     var startingpoint = request.params.item * (request.params.pageNumber - 1);
     var endpoint = request.params.item * request.params.pageNumber;
     var productInfo = [];
     var restProduct = [];
-   
     if (request.params.pageNumber == PageNeed) {
         for (var o = startingpoint; o < TotalItem; o++) {
             //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
@@ -73,6 +84,7 @@ var replacing = (str) => {
     str = str.substring(1, str.length - 1);
     return str;
 };
+
 var controllers = {
     about: function (req, res) {
         var aboutInfo = {
@@ -84,14 +96,14 @@ var controllers = {
     leastRetail: function (req, res) {
         var productInfo = [];
         for (var i = 0; i < LeastRetail.length; i++) {
-            if (LeastRetail[i].id === "") { break;}
+            if (LeastRetail[i].id === "") { break; }
             productInfo.push({
                 id: LeastRetail[i].id,
                 product_name: LeastRetail[i].product_name,
                 description: LeastRetail[i].long_description,
                 retail: LeastRetail[i].Unit_retail
             });
-          
+
         }
         for (var x = 0; x < productInfo.length; x++) {
             if (productInfo[x].product_name === null) { break; }
@@ -102,13 +114,18 @@ var controllers = {
     },
     leastRetail2: function (req, res) {
         // res.send(req.params);   ////http://localhost:3001/leastretail/item/15/page/7
-            res.send(ReqResInBrowsing(req, LeastRetail));
-        
+        res.send(ReqResInBrowsing(req, sortingPriceFunction(LeastRetail, "alphabetUp")));
     },
     sortPriceUp: function (req, res) {
-        res.send(ReqResInBrowsing(req, sortListPriceUp));
-       
+        res.send(ReqResInBrowsing(req, sortingPriceFunction(LeastRetail, "priceUp")));
+    },
+    sortPriceDown: function (req, res) {
+        res.send(ReqResInBrowsing(req, sortingPriceFunction(LeastRetail, "priceDown")));
+    },
+    productPage: function (req, res) {
+        let obj = LeastRetail.find(x => x.id === req.params.id);
+        res.send(obj);
     }
-};
+}
 module.exports = controllers;
 

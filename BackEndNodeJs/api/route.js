@@ -8,8 +8,10 @@ module.exports = function (app) {
         .get(controllers.leastRetail);
     app.route('/leastretail/item/:item/page/:pageNumber')
         .get(controllers.leastRetail2);
-    app.route('/leastretail/price/ascending/item/:item/page/:pageNumber')
+    app.route('/sortprice/ascending/item/:item/page/:pageNumber')
         .get(controllers.sortPriceUp);
- //   app.route('/leastretail/price/descending')
- //       .get(controllers.sortPriceDown);
+    app.route('/sortprice/descending/item/:item/page/:pageNumber')
+        .get(controllers.sortPriceDown);
+    app.route('/products/:id')
+        .get(controllers.productPage);
 };

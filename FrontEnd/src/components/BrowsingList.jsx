@@ -10,7 +10,7 @@ import 'semantic-ui-css/semantic.min.css';
 export const BrowsingList = (props) => {
     var initValue = [];
     var rest = [];
-    //var limit = 0;
+  
     const [items, setItems] = useState([]);
     const [restItem, setRestItem] = useState([])
     const [totalRest, setTotalRest] = useState(0); // the total of the rest of items.
@@ -19,72 +19,80 @@ export const BrowsingList = (props) => {
     const [pageLocation, setPageLocation] = useState(1);
     const [totalItem, setTotalItem] = useState(0);
     const [countPage, setCountPage] = useState(0);
-    const [fetchsort, setFetchSort] = useState('');
+    const [fetchsort, setFetchSort] = useState('none');
     const [activePage, setActivePage] = useState(1);
-    const [restload, setRestLoad] = useState(false);
+ 
     
     useEffect(() => {
         document.title = `Home Depot - Browsing`;
-        if (fetchsort === '')
-            fetching(pageNumber, pageLocation);
-        else {
             sortFetching(pageNumber, pageLocation,fetchsort);
-        }
         setLoad(false);
         
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [load]);
 
-    const fetching = async (number, location) => {
+
+
+    const sortFetching = async (number, location, sortPrice) => {//http://localhost:3001/sortprice/descending/item/15/page/1
         await axios.get("http://localhost:3001/leastretail").then((res) => {
-            setTotalItem(res.data.length-1);
-           //limit = (res.data.count / pageNumber) - 1;
+            setTotalItem(res.data.length - 1);
+       
         })
-        await axios.get("http://localhost:3001/leastretail/item/" + number + "/page/" + location).then((res) => {
+        if (sortPrice != "none")
+        {
+            await axios.get("http://localhost:3001/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)).then((res) => {
+               // console.log(res.data);
+                if ((number * location !== totalItem) && (location === countPage)) {
+                    setTotalRest(totalItem - (number * (countPage - 1)));
 
-            if ((number * location !== totalItem) && (location === countPage) ) {
-                setTotalRest(totalItem - (number * (countPage - 1)));
-              
-                for (var i = 0; i < totalRest; i++) {
-                    rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
-                }
-               
-                setRestItem(rest);
-                setLoad(true);
-            }
-            else {
-                for (var i = 0; i < number; i++) {
-                    initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
-                }
-                setItems(initValue)
-                setLoad(true);
-            }
-        }
-        )
+                    for (var i = 0; i < totalRest; i++) {
+                        rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                    }
 
-        }
-   
-
-    const sortFetching = async (number, location, sortPrice) => {
-        await axios.get("http://localhost:7000/catalog-api/products/page/" + sortPrice + "?pageSize=" + number + "&pageIndex=" + (location - 1)).then((res) => {
-            console.log(res.data);
-            for (var i = 0; i < number; i++) {
-                initValue.push({ id: res.data.data[i].id, product_name: res.data.data[i].product_name, unit_retail: res.data.data[i].unit_retail });
-            }
-            setItems(initValue)
-            setLoad(true);
-        }).catch(async function (e) {
-            var startingRest = (number * (countPage - 1));
-            await axios.get("http://localhost:7000/catalog-api/products/page/" + sortPrice + "?pageSize=" + totalItem + "&pageIndex=" + 0).then((res) => {
-                for (var i = startingRest; i < totalItem; i++) {
-                    rest.push({ id: res.data.data[i].id, product_name: res.data.data[i].product_name, unit_retail: res.data.data[i].unit_retail });
+                    setRestItem(rest);
+                    setLoad(true);
                 }
-                setRestItem(rest);
-                setTotalRest(totalItem - startingRest);
-                setRestLoad(true);
-                setLoad(true);
+                else {
+                    for (var i = 0; i < number; i++) {
+                        initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                    }
+                 //   console.log(initValue);
+                    setItems(initValue)
+                    setLoad(true);
+                }
+            }).catch(async function (e) {
+                console.log(e);
             })
-        })
+        } 
+      
+        else {
+   
+            await axios.get("http://localhost:3001/leastretail/item/" + number + "/page/" + location).then((res) => {
+                if ((number * location !== totalItem) && (location === countPage)) {
+                    setTotalRest(totalItem - (number * (countPage - 1)));
+
+                    for (var i = 0; i < totalRest; i++) {
+                        rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                   
+                    }
+
+                    setRestItem(rest);
+                    setLoad(true);
+                }
+                else {
+                    for (var i = 0; i < number; i++) {
+                        initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                        
+                    }
+                    console.log(initValue);
+                    setItems(initValue);
+                    setLoad(true);
+                }
+            }
+            ).catch(function (e) {
+                console.log(e);
+            });
+        }
     }
     const options = [5, 10, 15, 20, 25];
 
@@ -157,8 +165,8 @@ export const BrowsingList = (props) => {
                         <div className="flex flex-wrap  lg:justify-start w-48">
                             <button onClick={() => { setFetchSort('ascending'); changePage(1);}} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 hover active:font-bold active:bg-orange-500 w-48 border border-orange-500 lg:border-none rounded"> Lowest Cost</button>
                             <button onClick={() => { setFetchSort('descending'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Highest Cost</button>
-                            <button onClick={() => { setFetchSort('reverse'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Reverse </button>
-                            <button onClick={() => { setFetchSort(''); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Alphabetical</button> 
+                            {/* <button onClick={() => { setFetchSort('AlphaReverse'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Reverse </button>*/}
+                            <button onClick={() => { setFetchSort('none'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Alphabetical</button> 
                           
                         </div>
                     </div>
