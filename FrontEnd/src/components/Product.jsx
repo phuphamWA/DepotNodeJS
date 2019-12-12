@@ -28,12 +28,12 @@ export  const Product = (props) => {
         await axios.get("http://localhost:3001/products/" + ProductID).then((res) => {
             console.log(res.data);
             setProductName(res.data.product_name);
-            setUnitCost((Math.round(res.data.Unit_retail * 100) / 100).toFixed(2));
-            setVender(res.data.supplier_name);
+            setUnitCost((Math.round(res.data.unit_retail * 100) / 100).toFixed(2));
+            setVender(res.data.Supplier_name);
             setDescription(res.data.long_description);
         })
     }
-    // (Math.round(res.data.retail * 100) / 100).toFixed(2) }
+ 
     const page_title = (
 
         <div className="mt-4 justify-center w-full h-auto md:h-auto">

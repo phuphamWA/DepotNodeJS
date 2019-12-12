@@ -12,13 +12,14 @@ MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("HomeDepot");
     var queryAll = {};
-    dbo.collection("LeastRetail").find(queryAll).toArray(function (err, result) {
+    dbo.collection("LeastPrice").find(queryAll).toArray(function (err, result) {
         if (err) throw err;
         LeastRetail = result;
         for (var l = 0; l < LeastRetail.length; l++) {
             if (LeastRetail[l].product_name === null) { LeastRetail[l] = LeastRetail[l - 1]; break; }
             LeastRetail[l].product_name = replacing(LeastRetail[l].product_name);
             LeastRetail[l].long_description = replacing(LeastRetail[l].long_description);
+            LeastRetail[l].Supplier_name = replacing(LeastRetail[l].Supplier_name);
         }
 
         TotalItem = LeastRetail.length-1;

@@ -15,4 +15,7 @@ select *from vendors;
 select *from productName;
 Create table vendor_product as select productName.product_key,productName.product_name,vendors.supplier_key,vendors.Supplier_name, vendors.Unit_cost,vendors.Unit_retail from vendors, productName where vendors.supplier_key = productName.supplier_key;
 select * from vendor_product;
-select supplier_key,least.id,least.product_name,least.long_description,least.unit_retail from offerings inner join least on offerings.product_key = least.id;
+Create table midware as select supplier_key,least.id,least.product_name,least.long_description,least.unit_retail from offerings inner join least on offerings.product_key = least.id and offerings.unit_retail = least.unit_retail;
+select * from midware;
+Create Table Complete_Least as select midware.id, midware.product_name, midware.long_description,midware.unit_retail,Supplier_name from midware, suppliers where suppliers.id = midware.supplier_key;
+select * from Complete_Least;
