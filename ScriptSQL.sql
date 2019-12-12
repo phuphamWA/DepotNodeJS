@@ -14,4 +14,5 @@ select * from least;
 select *from vendors;
 select *from productName;
 Create table vendor_product as select productName.product_key,productName.product_name,vendors.supplier_key,vendors.Supplier_name, vendors.Unit_cost,vendors.Unit_retail from vendors, productName where vendors.supplier_key = productName.supplier_key;
-select * from vendor_product
+select * from vendor_product;
+select supplier_key,least.id,least.product_name,least.long_description,least.unit_retail from offerings inner join least on offerings.product_key = least.id;
