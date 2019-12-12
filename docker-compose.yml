@@ -1,0 +1,12 @@
+version:'3'
+
+services:
+  server:
+    product-service:
+    build:./BackEndNodeJs
+    ports:
+      -3001:80
+  website:
+    image: frontend
+    ports:
+      - 3000:80

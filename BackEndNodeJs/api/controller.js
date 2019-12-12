@@ -87,6 +87,7 @@ var replacing = (str) => {
 };
 
 var controllers = {
+    home: function (req, res) { res.send("Welcome Backend Api");},
     about: function (req, res) {
         var aboutInfo = {
             name: properties.name,
