@@ -37,14 +37,14 @@ export const BrowsingList = (props) => {
 
     const fetching = async (number, location) => {
         await axios.get("http://localhost:3001/leastretail").then((res) => {
-            setTotalItem(res.data.length);
+            setTotalItem(res.data.length-1);
            //limit = (res.data.count / pageNumber) - 1;
         })
-        await axios.get("http://localhost:3001/leastRetail/" + number + "/page/" + location).then((res) => {
-          
-            if (location === countPage) {
-                setTotalRest (totalItem - (number * (countPage - 1)));
-            
+        await axios.get("http://localhost:3001/leastretail/item/" + number + "/page/" + location).then((res) => {
+
+            if ((number * location !== totalItem) && (location === countPage) ) {
+                setTotalRest(totalItem - (number * (countPage - 1)));
+              
                 for (var i = 0; i < totalRest; i++) {
                     rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
                 }
@@ -93,8 +93,9 @@ export const BrowsingList = (props) => {
         console.log(number);
         console.log(location);
         var stepup = Math.round(totalItem / pageNumber)
+        console.log(totalItem);
         setCountPage(stepup);
-        if (stepup === location) {
+        if (number * location !== totalItem && location === stepup) {
             number = totalRest;
         }
             for (var i = 0; i < number; i++) {

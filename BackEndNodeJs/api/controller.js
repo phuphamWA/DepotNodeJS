@@ -6,7 +6,8 @@ var url = "mongodb+srv://gum:Gumgum123@cluster0-ycsux.azure.mongodb.net/test?ret
 
 var LeastRetail;
 var TotalItem;
-var options = [5, 10, 15, 20];
+var sortListPriceUp;
+var sortListPriceDown;
 MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("HomeDepot");
@@ -14,10 +15,60 @@ MongoClient.connect(url, function (err, db) {
     dbo.collection("LeastRetail").find(queryAll).toArray(function (err, result) {
         if (err) throw err;
         LeastRetail = result;
+        for (var l = 0; l < LeastRetail.length; l++) {
+            if (LeastRetail[l].product_name === null) { LeastRetail[l] = LeastRetail[l - 1]; break; }
+            LeastRetail[l].product_name = replacing(LeastRetail[l].product_name);
+            LeastRetail[l].long_description = replacing(LeastRetail[l].long_description);
+        }
+
         TotalItem = LeastRetail.length-1;
         db.close();
+     //     sortListPriceUp.sort((a, b) => { return (a.Unit_retail - b.Unit_retail); });
+     //   sortListPriceDown = LeastRetail.sort((a, b) => { return (b.Unit_retail - a.Unit_retail); });
+       
     });
+
 });
+
+const ReqResInBrowsing = (request, array) => {
+    console.log(request.params.item);
+    console.log(request.params.pageNumber);
+    console.log(TotalItem);
+    var PageNeed = Math.round(TotalItem / request.params.item);
+    var startingpoint = request.params.item * (request.params.pageNumber - 1);
+    var endpoint = request.params.item * request.params.pageNumber;
+    var productInfo = [];
+    var restProduct = [];
+   
+    if (request.params.pageNumber == PageNeed) {
+        for (var o = startingpoint; o < TotalItem; o++) {
+            //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
+            restProduct.push({
+                id: array[o].id,
+                product_name: array[o].product_name,
+                description: array[o].long_description,
+                retail: array[o].Unit_retail
+            });
+        }
+        return (restProduct);
+    }
+    else if (request.params.pageNumber > PageNeed) {
+        res.send("Error! Nothing here");
+        return;
+    }
+    else {
+        for (var i = startingpoint; i < endpoint; i++) {
+            productInfo.push({
+                id: array[i].id,
+                product_name: array[i].product_name,
+                description: array[i].long_description,
+                retail: array[i].Unit_retail
+            });
+
+        }
+        return (productInfo);
+    }
+}
 var replacing = (str) => {
     str = str.substring(1, str.length - 1);
     return str;
@@ -50,59 +101,14 @@ var controllers = {
         res.send(productInfo);
     },
     leastRetail2: function (req, res) {
-        // res.send(req.params);   ////http://localhost:3001/leastretail/15/page/7
-        console.log(req.params.item);
-        console.log(req.params.pageNumber);
-        console.log(TotalItem);
-        var PageNeed = Math.round(TotalItem / req.params.item);
-        var startingpoint = req.params.item * (req.params.pageNumber - 1);
-        var endpoint = req.params.item * req.params.pageNumber;
-        var productInfo = [];
-        var restProduct = [];
-        if (req.params.pageNumber == PageNeed) {
-            for (var o = startingpoint; o < TotalItem; o++) {
-                //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
-                restProduct.push({
-                    id: LeastRetail[o].id,
-                    product_name: LeastRetail[o].product_name,
-                    description: LeastRetail[o].long_description,
-                    retail: LeastRetail[o].Unit_retail
-                });
-            }
-            for (var u = 0; u < restProduct.length; u++) {
-                if (restProduct[u].product_name === null) { break; }
-                restProduct[u].product_name = replacing(restProduct[u].product_name);
-                restProduct[u].description = replacing(restProduct[u].description);
-            }
-            res.send(restProduct);
-            return;
-        }
-        else if (req.params.pageNumber > PageNeed) {
-            res.send("Error! Nothing here");
-            return;
-        }
-        else {
-            for (var i = startingpoint; i < endpoint; i++) {
-                //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
-                productInfo.push({
-                    id: LeastRetail[i].id,
-                    product_name: LeastRetail[i].product_name,
-                    description: LeastRetail[i].long_description,
-                    retail: LeastRetail[i].Unit_retail
-                });
-
-            }
-            console.log(req.params.item * req.params.pageNumber);
-            for (var x = 0; x < productInfo.length; x++) {
-                if (productInfo[x].product_name === null) { break; }
-                productInfo[x].product_name = replacing(productInfo[x].product_name);
-                productInfo[x].description = replacing(productInfo[x].description);
-            }
-
-            res.send(productInfo);
-        }
+        // res.send(req.params);   ////http://localhost:3001/leastretail/item/15/page/7
+            res.send(ReqResInBrowsing(req, LeastRetail));
+        
+    },
+    sortPriceUp: function (req, res) {
+        res.send(ReqResInBrowsing(req, sortListPriceUp));
+       
     }
-
 };
 module.exports = controllers;
 

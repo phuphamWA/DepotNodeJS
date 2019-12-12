@@ -6,6 +6,10 @@ module.exports = function (app) {
         .get(controllers.about);
     app.route('/leastretail')
         .get(controllers.leastRetail);
-    app.route('/leastretail/:item/page/:pageNumber')
+    app.route('/leastretail/item/:item/page/:pageNumber')
         .get(controllers.leastRetail2);
+    app.route('/leastretail/price/ascending/item/:item/page/:pageNumber')
+        .get(controllers.sortPriceUp);
+ //   app.route('/leastretail/price/descending')
+ //       .get(controllers.sortPriceDown);
 };
