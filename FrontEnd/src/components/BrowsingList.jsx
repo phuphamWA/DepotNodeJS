@@ -10,7 +10,7 @@ import 'semantic-ui-css/semantic.min.css';
 export const BrowsingList = (props) => {
     var initValue = [];
     var rest = [];
-  
+    const portFetch = 9000;
     const [items, setItems] = useState([]);
     const [restItem, setRestItem] = useState([])
     const [totalRest, setTotalRest] = useState(0); // the total of the rest of items.
@@ -26,22 +26,20 @@ export const BrowsingList = (props) => {
     useEffect(() => {
         document.title = `Home Depot - Browsing`;
             sortFetching(pageNumber, pageLocation,fetchsort);
-        setLoad(false);
-        
-
+      //  setLoad(false);
     }, [load]);
 
 
 
     const sortFetching = async (number, location, sortPrice) => {//http://localhost:3001/sortprice/descending/item/15/page/1
-        await axios.get("http://localhost:3001/leastretail").then((res) => {
+        await axios.get("http://localhost:" + portFetch+"/leastretail").then((res) => {
             setTotalItem(res.data.length - 1);
        
         })
         if (sortPrice != "none")
         {
-            await axios.get("http://localhost:3001/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)).then((res) => {
-               // console.log(res.data);
+            await axios.get("http://localhost:" + portFetch +"/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)).then((res) => {
+                console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 
@@ -67,7 +65,8 @@ export const BrowsingList = (props) => {
       
         else {
    
-            await axios.get("http://localhost:3001/leastretail/item/" + number + "/page/" + location).then((res) => {
+            await axios.get("http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location).then((res) => {
+                console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 

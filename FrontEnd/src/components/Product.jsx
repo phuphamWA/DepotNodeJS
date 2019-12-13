@@ -10,7 +10,7 @@ import kitty1 from '../images/cute-kitty-1.jpg';
 import kitty2 from '../images/kitty_sleep-compressor.jpg';
 
 export  const Product = (props) => {
-
+    const portFetch = 9000;
     let { id } = useParams();
     const [productName, setProductName] = useState('');
     const [unitcost, setUnitCost] = useState('');
@@ -25,7 +25,7 @@ export  const Product = (props) => {
 
     const fetching = async (ProductID) => {
 
-        await axios.get("http://localhost:3001/products/" + ProductID).then((res) => {
+        await axios.get("http://localhost:" + portFetch +"/products/" + ProductID).then((res) => {
             console.log(res.data);
             setProductName(res.data.product_name);
             setUnitCost((Math.round(res.data.unit_retail * 100) / 100).toFixed(2));

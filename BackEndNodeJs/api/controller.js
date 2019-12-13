@@ -21,19 +21,18 @@ MongoClient.connect(url, function (err, db) {
             LeastRetail[l].long_description = replacing(LeastRetail[l].long_description);
             LeastRetail[l].Supplier_name = replacing(LeastRetail[l].Supplier_name);
         }
-
+     
         TotalItem = LeastRetail.length-1;
         db.close();
     });
 
 });
 const sortingPriceFunction = (array, option) => {
-       
     var newArray = [];
     if (option === "priceUp")
-        newArray = array.sort((a, b) => { return (a.Unit_retail - b.Unit_retail); });
+        newArray = array.sort((a, b) => { return (a.unit_retail - b.unit_retail); });
     else if (option === "priceDown") 
-        newArray = array.sort((a, b) => { return (b.Unit_retail - a.Unit_retail); });
+        newArray = array.sort((a, b) => { return (b.unit_retail - a.unit_retail); });
     else if (option === "alphabetUp")
         newArray = array.sort((a, b) => {
             if (a.product_name > b.product_name)
@@ -59,9 +58,10 @@ const ReqResInBrowsing = (request, array) => {
                 id: array[o].id,
                 product_name: array[o].product_name,
                 description: array[o].long_description,
-                retail: array[o].Unit_retail
+                retail: array[o].unit_retail
             });
         }
+       
         return (restProduct);
     }
     else if (request.params.pageNumber > PageNeed) {
@@ -74,7 +74,7 @@ const ReqResInBrowsing = (request, array) => {
                 id: array[i].id,
                 product_name: array[i].product_name,
                 description: array[i].long_description,
-                retail: array[i].Unit_retail
+                retail: array[i].unit_retail
             });
 
         }
@@ -103,9 +103,9 @@ var controllers = {
                 id: LeastRetail[i].id,
                 product_name: LeastRetail[i].product_name,
                 description: LeastRetail[i].long_description,
-                retail: LeastRetail[i].Unit_retail
+                retail: LeastRetail[i].unit_retail
             });
-
+      //      console.log(productInfo);
         }
         for (var x = 0; x < productInfo.length; x++) {
             if (productInfo[x].product_name === null) { break; }

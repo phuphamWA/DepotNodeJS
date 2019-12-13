@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const config = {
     name: 'HomeDepotBackEnd',
-    port: 3001,
+    port: 3001 ,
     host: '0.0.0.0',
 };
 const app = express();
