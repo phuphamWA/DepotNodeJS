@@ -16,4 +16,6 @@ module.exports = function (app) {
         .get(controllers.sortPriceDown);
     app.route('/products/:id')
         .get(controllers.productPage);
+    app.route('/vendors/:id')
+        .get(controllers.vendorPage);
 };

@@ -5,7 +5,7 @@ select * from products;
 select * from  suppliers;
 drop table least_retail;
 Create Table productName as select offerings.product_key,product_name,long_description,Unit_cost,Unit_retail, offerings.supplier_key from offerings,products where products.Id=offerings.product_key ;
-Create Table vendors as select Unit_cost,Unit_retail,Supplier_name,offerings.supplier_key,offerings.product_key from offerings,suppliers where suppliers.Id=offerings.supplier_key ;
+Create Table vendors as select offerings.supplier_key,offerings.product_key,Supplier_name,Unit_cost,Unit_retail from offerings,suppliers where suppliers.Id=offerings.supplier_key ;
 Create Table least_retail as select products.id,product_name,long_description,Unit_retail from offerings,products where products.Id=offerings.product_key ;
 drop table productName;
 select* from least_retail; 

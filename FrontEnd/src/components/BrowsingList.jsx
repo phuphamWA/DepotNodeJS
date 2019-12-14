@@ -5,12 +5,13 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Pagination } from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
+import { PortConnectToBackEnd } from '..';
 /* eslint no-useless-concat: 0 */
 
 export const BrowsingList = (props) => {
     var initValue = [];
     var rest = [];
-    const portFetch = 9000;
+    const portFetch = PortConnectToBackEnd;
     const [items, setItems] = useState([]);
     const [restItem, setRestItem] = useState([])
     const [totalRest, setTotalRest] = useState(0); // the total of the rest of items.
@@ -39,7 +40,7 @@ export const BrowsingList = (props) => {
         if (sortPrice != "none")
         {
             await axios.get("http://localhost:" + portFetch +"/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)).then((res) => {
-                console.log(res.data);
+             //   console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 
@@ -66,7 +67,7 @@ export const BrowsingList = (props) => {
         else {
    
             await axios.get("http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location).then((res) => {
-                console.log(res.data);
+               // console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 
@@ -83,7 +84,7 @@ export const BrowsingList = (props) => {
                         initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
                         
                     }
-                    console.log(initValue);
+                   //console.log(initValue);
                     setItems(initValue);
                     setLoad(true);
                 }
@@ -97,10 +98,10 @@ export const BrowsingList = (props) => {
 
     const loopfetching = async (number, location) => {
         var htmlElements = '';
-        console.log(number);
-        console.log(location);
+    //    console.log(number);
+    //    console.log(location);
         var stepup = Math.round(totalItem / pageNumber)
-        console.log(totalItem);
+    //    console.log(totalItem);
         setCountPage(stepup);
         if (number * location !== totalItem && location === stepup) {
             number = totalRest;

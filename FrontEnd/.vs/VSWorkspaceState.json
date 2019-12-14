@@ -1,8 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\src"
+    "\\src",
+    "\\src\\components"
   ],
-  "SelectedNode": "\\Dockerfile",
   "PreviewInSolutionExplorer": false
 }

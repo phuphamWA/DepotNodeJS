@@ -5,9 +5,10 @@ var url = "mongodb+srv://gum:Gumgum123@cluster0-ycsux.azure.mongodb.net/test?ret
 
 
 var LeastRetail;
+var Vendors;
 var TotalItem;
-var sortListPriceUp;
-var sortListPriceDown;
+
+
 MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("HomeDepot");
@@ -16,17 +17,17 @@ MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         LeastRetail = result;
         for (var l = 0; l < LeastRetail.length; l++) {
-            if (LeastRetail[l].product_name === null) { LeastRetail[l] = LeastRetail[l - 1]; break; }
+            if (LeastRetail[l].product_name === null) { LeastRetail[l] = LeastRetail[l - 1]; }
             LeastRetail[l].product_name = replacing(LeastRetail[l].product_name);
             LeastRetail[l].long_description = replacing(LeastRetail[l].long_description);
             LeastRetail[l].Supplier_name = replacing(LeastRetail[l].Supplier_name);
         }
-     
-        TotalItem = LeastRetail.length-1;
+        TotalItem = LeastRetail.length - 1;
         db.close();
     });
-
 });
+
+
 const sortingPriceFunction = (array, option) => {
     var newArray = [];
     if (option === "priceUp")
@@ -105,13 +106,8 @@ var controllers = {
                 description: LeastRetail[i].long_description,
                 retail: LeastRetail[i].unit_retail
             });
-      //      console.log(productInfo);
         }
-        for (var x = 0; x < productInfo.length; x++) {
-            if (productInfo[x].product_name === null) { break; }
-            productInfo[x].product_name = replacing(productInfo[x].product_name);
-            productInfo[x].description = replacing(productInfo[x].description);
-        }
+
         res.send(productInfo);
     },
     leastRetail2: function (req, res) {
@@ -127,6 +123,24 @@ var controllers = {
     productPage: function (req, res) {
         let obj = LeastRetail.find(x => x.id === req.params.id);
         res.send(obj);
+    },
+    vendorPage: function(req, res) {
+       
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("HomeDepot");
+            var query = { "product_key": req.params.id };
+            dbo.collection("Vendors").find(query).toArray(function (err, result) {
+                Vendors = result;
+                for (var i = 0; i < Vendors.length; i++) {
+                    if (Vendors[i].Supplier_name === null) { Vendors[i] = Vendors[i-1]; }
+                    Vendors[i].Supplier_name = replacing(Vendors[i].Supplier_name);
+                }
+               
+              //  console.log(result);
+            });
+        });
+        res.send(Vendors);
     }
 }
 module.exports = controllers;

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import '../css/mainTailwind.css';
 import axios from 'axios';
 import { useParams, Link } from "react-router-dom";
+import { PortConnectToBackEnd } from '..';
 export const Vendors=  () => {
      let { idv } = useParams();
-     var initValue = [];
+    var initValue = [];
+    const portFetch = PortConnectToBackEnd;
      const [supplier, setSupplier] = useState([]);
      const [totalVendor, setTotalVendor] = useState(0);
      const [load, setLoad] = useState(false);
@@ -12,35 +14,38 @@ export const Vendors=  () => {
      useEffect(() => {
          document.title = `Home Depot - Vendor`;
          fetching(idv);
-         setLoad(false);
+   
       
      }, [load]);
      const fetching = async (ProductID) => {
 
-         await axios.get("http://localhost:7000/catalog-api/products/offerings/" + ProductID).then((res) => {
-             console.log(res.data);
+         await axios.get("http://localhost:" + portFetch +"/vendors/" + ProductID).then((res) => {
+           
              setTotalVendor(res.data.length);
-          
+            
              for (var i = 0; i < res.data.length; i++) {
-                 initValue.push({ supplier: res.data[i].supplier_name, unit_cost: res.data[i].unit_cost, unit_retail: res.data[i].unit_retail });
+                 initValue.push({ supplier: res.data[i].Supplier_name, unit_cost: res.data[i].Unit_cost, unit_retail: res.data[i].Unit_retail });
              }
+            // console.log(initValue);
              setSupplier(initValue);
              setLoad(true);
          })
-     }
+    }
+
      const loopfetching =  (totalVendor) => {
          var htmlElements = '';
          var loopElements = '';
          var colorchange = '';
+        // console.log(totalVendor);
          for (var i = 0; i < totalVendor; i++) { 
              (i % 2 == 0) ? colorchange = 'bg-gray-300' : colorchange = 'bg-white';
              loopElements += `
             <tr>`+
-                 `<td class="p-2 border-2 border-orange-500 text-center ` + colorchange+`">` + supplier[i].supplier +
+                 `<td class="p-2 border-2 border-orange-500 text-center ` + colorchange + `">` + supplier[i].supplier +
                  `</td>` +
-                 `<td class="p-2 border-2 border-orange-500 text-right ` + colorchange +`">` + supplier[i].unit_cost +
-                 `</td>` +
-                 `<td class="p-2 border-2 border-orange-500 text-right ` + colorchange +`">`+ supplier[i].unit_retail +
+                 `<td class="p-2 border-2 border-orange-500 text-right ` + colorchange + `">` + (Math.round(supplier[i].unit_cost * 100) / 100).toFixed(2) +
+                 `</td>` + 
+                 `<td class="p-2 border-2 border-orange-500 text-right ` + colorchange + `">` + (Math.round(supplier[i].unit_retail * 100) / 100).toFixed(2) +
                  `</td>` +
             `</tr>`
          }

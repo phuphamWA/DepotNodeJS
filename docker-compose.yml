@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   server:
@@ -7,7 +7,7 @@ services:
     ports:
       - 9000:3001
   website:
-    image:
+    image: 
       frontend
     ports:
-      - 3000:80
+      - 8080:80
