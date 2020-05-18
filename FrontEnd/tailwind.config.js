@@ -9,6 +9,7 @@ module.exports = {
         extend: {
             screens: {
                 ti: '450px',
+                xl: '1580px',
             },
             spacing: {
                 '20': '2rem',
