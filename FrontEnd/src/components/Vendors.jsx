@@ -6,9 +6,10 @@ import { GetVendors, loader } from '../ListOfLinks';
 import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import { Carousel } from "react-responsive-carousel";
-
+import { PortConnectToBackEnd } from '..';
 export const Vendors = () => {
     let { idv } = useParams();
+    
     var initValue = [];
     const [supplier, setSupplier] = useState([]);
     const [/*totalVendor*/, setTotalVendor] = useState(0);
@@ -21,12 +22,13 @@ export const Vendors = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load]);
-    const fetching = async (ProductID) => {
-        await axios.get(GetVendors(ProductID)).then((res) => {
+    const fetching = async (idv) => {
+        await axios.get("http://localhost:" + PortConnectToBackEnd + "/vendors/" + idv).then((res) => {
+            console.log(res);
             setTotalVendor(res.data.length);
-            setProductName(res.data[0].product_name);
+            setProductName(res.data[0].Product_name);
             for (var i = 0; i < res.data.length; i++) {
-                initValue.push({ supplier: res.data[i].supplier_name, supplier_key: res.data[i].supplier_key, unit_cost: res.data[i].unit_cost, unit_retail: res.data[i].unit_retail, offering_key: res.data[i].offering_key });
+                initValue.push({ supplier: res.data[i].Supplier_name, supplier_key: res.data[i].supplier_key, unit_retail: (Math.round(res.data[i].Unit_retail * 100) / 100).toFixed(2), offering_key: res.data[i].offeringID });
             }
             setSupplier(initValue);
 
@@ -104,7 +106,7 @@ export const Vendors = () => {
             <br />
 
             <div> {load ? container : null}</div>
-            <div>{container}</div>
+           
             <br />
 
         </div>

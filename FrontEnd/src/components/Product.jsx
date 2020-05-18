@@ -8,7 +8,7 @@ import axios from 'axios';
 import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import FireBaseSetup from '../FireBaseSetup';
-import { GetDiscOffer, PostProduct, TokenHeader, loader } from '../ListOfLinks';
+import { loader } from '../ListOfLinks';
 import { PortConnectToBackEnd } from '..';
 
 export const Product = (props) => {
@@ -62,7 +62,7 @@ export const Product = (props) => {
             setVender(res.data.Supplier_name);
             setunitRetail((Math.round(res.data.unit_retail * 100) / 100).toFixed(2));
             setUOM(res.data.uom);
-            setUnitofMeasure(res.data.unit_cost)
+          
             setDiscountType(res.data.type);
             setDiscountPrice(res.data.discount_price);
             setDiscountPercent(res.data.discount_percentage);
@@ -129,7 +129,7 @@ export const Product = (props) => {
                 <div className="pr-2">Rating</div>
                 <div >&#9733;&#9733;&#9733;&#9733;&#9733;</div>
             </div>
-            <div className="flex pr-2">Unit of Measure: {uom}</div>
+          
         </div>
     );
     const AddCartButton = async () => {
@@ -157,7 +157,7 @@ export const Product = (props) => {
         <div className="mx-20 block">
             <div onClick={() => window.location.assign("/supplier/" + supplierKey)} className="flex pr-2 font-bold text-lg cursor-pointer hover:bg-gray-300">{vendor}</div>
             <div className="flex ">
-                <Link to={'/vendors/' + productKey}> <div className="underline justify-center text-sm">Other Vendors</div></Link>
+                <Link to={'/products/' + productKey}> <div className="underline justify-center text-sm">Other Vendors</div></Link>
             </div>
         </div>
     );

@@ -25,10 +25,21 @@ Create Table Complete_Least as select midware.id, midware.product_name, midware.
 select * from Complete_Least;
 drop table mid2;
 Create Table mid2 as select id, product_key, supplier_key from offerings;
-ALTER TABLE mid2 RENAME COLUMN `id` TO `offeringID` ;
-ALTER TABLE mid2 RENAME COLUMN `supplier_key` TO `SupplierKey` ;
-select * from mid2;
+ALTER TABLE aa RENAME COLUMN `id` TO `offeringID` ;
+ALTER TABLE a RENAME COLUMN `supplier_key` TO `SupplierKey` ;
+select * from mid2; 
 Create Table OfferOne select * from mid2  join Complete_Least on Complete_Least.id = mid2.product_key and Complete_Least.supplier_key = mid2.SupplierKey;  
-
+drop table aa;
 select * from OfferOne;
 ALTER TABLE OfferOne Drop Column id; 
+Create Table mid3 as select id, product_key, supplier_key, Unit_retail from offerings;
+select * from aa;
+ALTER TABLE products RENAME COLUMN `Id` TO `ProductID` ;
+Create Table a  as  select ProductID,Product_name from products;
+Create Table b  as  select Id,Supplier_name from suppliers;
+select * from bb;
+Create Table bb as select * from b join aa on aa.supplier_key = b.Id;
+Create Table aa as select * from a join aa on aa.ProductID = mid3.product_key;
+ALTER TABLE aa Drop Column ProductID; 
+ALTER TABLE bb Drop Column Id; 
+select * from bb;

@@ -26,10 +26,10 @@ const NavTitle = (props) => {
 
     }, []);
     const fetching = (idToken) => {
-        axios.get(GetCart, TokenHeader(idToken)).then((res) => {
+      /*  axios.get(GetCart, TokenHeader(idToken)).then((res) => {
 
             setCountItem(res.data.offerings.length);
-        }).catch((e) => { setCountItem(0); });
+        }).catch((e) => { setCountItem(0); });*/
 
     }
 

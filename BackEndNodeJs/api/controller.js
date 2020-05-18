@@ -133,7 +133,7 @@ var controllers = {
                 retail: LeastRetail[i].unit_retail
             });
         }
-        console.log(productInfo);
+      //  console.log(productInfo);
         res.send(productInfo);
     },
     leastRetail2: function (req, res) {
@@ -147,28 +147,31 @@ var controllers = {
         res.send(ReqResInBrowsing(req, sortingPriceFunction(LeastRetail, "priceDown")));
     },
     productPage: function (req, res) {
-        console.log(req.params.id);
+      //  console.log(req.params.id);
         let obj = LeastRetail.find(x => x.offeringID === req.params.id);
-        console.log(obj);
+    //    console.log(obj);
         res.send(obj);
     },
     vendorPage: function (req, res) {
-
+        console.log("hi");
+        console.log(req.body);
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
+           
+           
             var dbo = db.db("HomeDepot");
             var query = { "product_key": req.params.id };
-            dbo.collection("Vendors").find(query).toArray(function (err, result) {
+            dbo.collection("SupplierAll").find(query).toArray(function (err, result) {
                 Vendors = result;
                 for (var i = 0; i < Vendors.length; i++) {
                     if (Vendors[i].Supplier_name === null) { Vendors[i] = Vendors[i - 1]; }
                     Vendors[i].Supplier_name = replacing(Vendors[i].Supplier_name);
                 }
 
-                //  console.log(result);
+                res.send(Vendors);
             });
         });
-        res.send(Vendors);
+        
     },
     randomItem: randomItem,
     postuser: function (req, res) {

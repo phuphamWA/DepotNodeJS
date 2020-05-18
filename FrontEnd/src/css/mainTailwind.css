@@ -627,9 +627,9 @@ video {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1580px) {
   .container {
-    max-width: 1280px;
+    max-width: 1580px;
   }
 }
 
@@ -12614,6 +12614,58 @@ video {
     color: #4a5568;
     font-size: 1.125rem;
   }
+}
+
+.ReactCollapse--collapse {
+  -webkit-transition: height 400ms;
+  transition: height 400ms;
+  width: 100%;
+  padding-top: 0.5rem;
+}
+
+.fade-in {
+  animation: fadeIn ease 5s;
+  -webkit-animation: fadeIn ease 5s;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.item-enter {
+  opacity: 0;
+}
+
+.item-enter-active {
+  opacity: 1;
+  -webkit-transition: opacity 1000ms ease-in;
+  transition: opacity 1000ms ease-in;
+}
+
+.item-exit {
+  opacity: 0;
+}
+
+.item-exit-active {
+  opacity: 0;
+  -webkit-transition: opacity 500ms ease-in;
+  transition: opacity 500ms ease-in;
 }
 
 @media (min-width: 640px) {
@@ -47842,7 +47894,7 @@ video {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1580px) {
   .xl\:sr-only {
     position: absolute;
     width: 1px;
@@ -71325,4 +71377,3 @@ video {
     z-index: auto;
   }
 }
-
