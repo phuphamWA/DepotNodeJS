@@ -18,4 +18,6 @@ module.exports = function (app) {
         .get(controllers.productPage);
     app.route('/vendors/:id')
         .get(controllers.vendorPage);
+    app.route('/randomitem')
+        .get(controllers.randomItem);
 };

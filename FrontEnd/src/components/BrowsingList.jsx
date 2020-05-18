@@ -6,6 +6,8 @@ import 'react-dropdown/style.css';
 import { Pagination } from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 import { PortConnectToBackEnd } from '..';
+import { Link } from 'react-router-dom';
+import { GetDiscBrowsingTotal, GetDiscBrowsing1, GetDiscBrowsing2, loader } from '../ListOfLinks';
 /* eslint no-useless-concat: 0 */
 
 export const BrowsingList = (props) => {
@@ -31,11 +33,15 @@ export const BrowsingList = (props) => {
     }, [load]);
 
 
-
+    function displayRandom() {
+        var rand = Math.floor(Math.random() * 100);
+        var imgStr = "https://generative-placeholders.glitch.me/image?width=500&height=500&img=".concat(rand);
+        return (<><img src={imgStr} width="150" height="112" alt="imgStr" /></>);
+    }
     const sortFetching = async (number, location, sortPrice) => {//http://localhost:3001/sortprice/descending/item/15/page/1
         await axios.get("http://localhost:" + portFetch+"/leastretail").then((res) => {
             setTotalItem(res.data.length - 1);
-       
+            setCountPage(Math.round(res.data.length / number));
         })
         if (sortPrice != "none")
         {
@@ -95,20 +101,52 @@ export const BrowsingList = (props) => {
         }
     }
     const options = [5, 10, 15, 20, 25];
+    const displayMap = () => {
+        console.log("i:",items);
+        const box = items.map(info => (
+            <div key={info}>
+                <div class="flex rounded-lg border bg-green-100 mb-2 lg:mb-6">
+                    <a target="_blank" href="!#">
+                        {displayRandom()}
+                    </a>
+                    <div class="inline-block flex-1 px-4 py-1 lg:px-8 lg:py-1 ">
+                        <Link to={load === true ? loader : '/offering/' + info.offerings}>
+                            <a class="text-black text-sm lg:text-xl hover:bg-gray-200" href="!#">{info.product_name }</a>
+                        </Link>
+                        <div class="text-xs lg:text-lg pb-4 lg:hidden unit_retail">Cost: ${info.unit_retail}</div>
+                        <div class="text-xs lg:text-md flex-wrap">Delivers Today</div>
+                        <div class="flex content-end">
+                            <div class="text-xs lg:text-md flex pt-12 lg:pt-24 hover:text-blue-600">Add to Favorites</div>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex px-4 py-2 lg:px-8 lg:py-4">
+                        <div class="text-lg unit_retail">Cost: ${info.unit_retail}</div>
+                    </div>
+                </div>
+            </div>
+        ))
 
+        return (
+            <div>
+                {box}
+            </div>
+        );
+    }
     const loopfetching = async (number, location) => {
         var htmlElements = '';
     //    console.log(number);
     //    console.log(location);
         var stepup = Math.round(totalItem / pageNumber)
-    //    console.log(totalItem);
+    
         setCountPage(stepup);
         if (number * location !== totalItem && location === stepup) {
             number = totalRest;
         }
+      
+      
             for (var i = 0; i < number; i++) {
                 htmlElements += `
-             <div class="flex rounded-lg border /*bg-green-100*/ mb-2 lg:mb-6">` +
+             <div class="flex rounded-lg border bg-green-100 mb-2 lg:mb-6">` +
                     `<div class="justify-start content-center>` +
                     `<a target="_blank"><img src="https://images.homedepot-static.com/productImages/8a89c543-1c72-4e6e-972f-0e5babb15a10/svn/husky-claw-hammers-n-s20shd-hn-64_400_compressed.jpg" width="150" height="112" alt="Hammer"/></a>` +
                     `</div>` +
@@ -163,10 +201,10 @@ export const BrowsingList = (props) => {
                     </div>
                     <div className="flex flex-wrap justify-center lg:justify-start">
                         <div className="flex flex-wrap  lg:justify-start w-48">
-                            <button onClick={() => { setFetchSort('ascending'); changePage(1);}} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 hover active:font-bold active:bg-orange-500 w-48 border border-orange-500 lg:border-none rounded"> Lowest Cost</button>
-                            <button onClick={() => { setFetchSort('descending'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Highest Cost</button>
+                            <button onClick={() => { setFetchSort('ascending'); changePage(1); setLoad(true);}} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 hover active:font-bold active:bg-orange-500 w-48 border border-orange-500 lg:border-none rounded"> Lowest Cost</button>
+                            <button onClick={() => { setFetchSort('descending'); changePage(1); setLoad(true);}} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Highest Cost</button>
                             {/* <button onClick={() => { setFetchSort('AlphaReverse'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Reverse </button>*/}
-                            <button onClick={() => { setFetchSort('none'); changePage(1); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Alphabetical</button> 
+                            <button onClick={() => { setFetchSort('none'); changePage(1); setLoad(true); }} className="my-2 py-2 lg:my-0 lg:py-0 hover:text-blue-600 w-48 active:bg-orange-500 border border-orange-500 lg:border-none rounded">Alphabetical</button> 
                           
                         </div>
                     </div>
@@ -184,8 +222,8 @@ export const BrowsingList = (props) => {
             </div>
 
             <div className="w-full lg:w-4/5">
-                <div>{load ? loopfetching(pageNumber, pageLocation)  : null}  </div>
-                <div id="container" /*className="bg-orange-100"*/> </div>
+                <div>{load ? loopfetching(pageNumber, pageLocation) : null}  </div>
+               <div id="container"> </div>
             </div>
         </div>
         

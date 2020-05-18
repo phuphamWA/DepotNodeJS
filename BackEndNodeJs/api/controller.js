@@ -27,7 +27,9 @@ MongoClient.connect(url, function (err, db) {
     });
 });
 
-
+const roundNumber = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+}
 const sortingPriceFunction = (array, option) => {
     var newArray = [];
     if (option === "priceUp")
@@ -87,8 +89,24 @@ var replacing = (str) => {
     return str;
 };
 
+const randomItem = (req,res) => {
+    var productInfo = [];
+    for (var i = 0; i < 15; i++) {
+        let r = Math.floor(Math.random() * LeastRetail.length);
+        console.log(LeastRetail[r]);
+        productInfo.push({
+            id: LeastRetail[r].id,
+            product_name: LeastRetail[r].product_name,
+            description: LeastRetail[r].long_description,
+            retail: roundNumber(LeastRetail[r].unit_retail)
+
+        });
+    }
+    res.send(productInfo);
+};
+
 var controllers = {
-    home: function (req, res) { res.send("Welcome Backend Api");},
+    home: function (req, res) { res.send("Welcome Backend Api"); },
     about: function (req, res) {
         var aboutInfo = {
             name: properties.name,
@@ -107,7 +125,7 @@ var controllers = {
                 retail: LeastRetail[i].unit_retail
             });
         }
-
+        console.log(productInfo);
         res.send(productInfo);
     },
     leastRetail2: function (req, res) {
@@ -124,8 +142,8 @@ var controllers = {
         let obj = LeastRetail.find(x => x.id === req.params.id);
         res.send(obj);
     },
-    vendorPage: function(req, res) {
-       
+    vendorPage: function (req, res) {
+
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db("HomeDepot");
@@ -133,15 +151,17 @@ var controllers = {
             dbo.collection("Vendors").find(query).toArray(function (err, result) {
                 Vendors = result;
                 for (var i = 0; i < Vendors.length; i++) {
-                    if (Vendors[i].Supplier_name === null) { Vendors[i] = Vendors[i-1]; }
+                    if (Vendors[i].Supplier_name === null) { Vendors[i] = Vendors[i - 1]; }
                     Vendors[i].Supplier_name = replacing(Vendors[i].Supplier_name);
                 }
-               
-              //  console.log(result);
+
+                //  console.log(result);
             });
         });
         res.send(Vendors);
-    }
-}
+    },
+    randomItem: randomItem
+
+};
 module.exports = controllers;
 
