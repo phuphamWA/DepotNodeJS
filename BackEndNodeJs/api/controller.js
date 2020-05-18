@@ -52,9 +52,15 @@ const ReqResInBrowsing = (request, array) => {
     var PageNeed = Math.round(TotalItem / request.params.item);
     var startingpoint = request.params.item * (request.params.pageNumber - 1);
     var endpoint = request.params.item * request.params.pageNumber;
+    console.log(array.length - 1);
+    if (endpoint > array.length - 1) 
+        endpoint = array.length - 1;
+    else
+        endpoint = request.params.item * request.params.pageNumber;
+    console.log("startingpoint:", startingpoint, " end:", endpoint);
     var productInfo = [];
     var restProduct = [];
-    if (request.params.pageNumber == PageNeed) {
+    if (request.params.pageNumber === PageNeed) {
         for (var o = startingpoint; o < TotalItem; o++) {
             //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
             restProduct.push({
