@@ -13,7 +13,7 @@ MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("HomeDepot");
     var queryAll = {};
-    dbo.collection("LeastPrice").find(queryAll).toArray(function (err, result) {
+    dbo.collection("OfferingOne").find(queryAll).toArray(function (err, result) {
         if (err) throw err;
         LeastRetail = result;
         for (var l = 0; l < LeastRetail.length; l++) {
@@ -29,7 +29,7 @@ MongoClient.connect(url, function (err, db) {
 
 const roundNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
-}
+};
 const sortingPriceFunction = (array, option) => {
     var newArray = [];
     if (option === "priceUp")
@@ -47,13 +47,12 @@ const sortingPriceFunction = (array, option) => {
     return (newArray);
 };
 const ReqResInBrowsing = (request, array) => {
-    console.log(request.params.item);
-    console.log(request.params.pageNumber);
+ /*   console.log(request.params.item);
+    console.log(request.params.pageNumber);*/
     var PageNeed = Math.round(TotalItem / request.params.item);
     var startingpoint = request.params.item * (request.params.pageNumber - 1);
     var endpoint = request.params.item * request.params.pageNumber;
-    console.log(array.length - 1);
-    if (endpoint > array.length - 1) 
+    if (endpoint > array.length - 1)
         endpoint = array.length - 1;
     else
         endpoint = request.params.item * request.params.pageNumber;
@@ -64,13 +63,14 @@ const ReqResInBrowsing = (request, array) => {
         for (var o = startingpoint; o < TotalItem; o++) {
             //     if (LeastRetail[i*req.params.pageNumber-1].id === "") { break; }
             restProduct.push({
-                id: array[o].id,
+                offerID: array[o].offeringID,
+                product_key: array[o].product_key,
                 product_name: array[o].product_name,
                 description: array[o].long_description,
                 retail: array[o].unit_retail
             });
         }
-       
+
         return (restProduct);
     }
     else if (request.params.pageNumber > PageNeed) {
@@ -80,7 +80,8 @@ const ReqResInBrowsing = (request, array) => {
     else {
         for (var i = startingpoint; i < endpoint; i++) {
             productInfo.push({
-                id: array[i].id,
+                offerID:array[i].offeringID,
+                product_key: array[i].product_key,
                 product_name: array[i].product_name,
                 description: array[i].long_description,
                 retail: array[i].unit_retail
@@ -89,7 +90,7 @@ const ReqResInBrowsing = (request, array) => {
         }
         return (productInfo);
     }
-}
+};
 var replacing = (str) => {
     str = str.substring(1, str.length - 1);
     return str;
@@ -125,7 +126,8 @@ var controllers = {
         for (var i = 0; i < LeastRetail.length; i++) {
             if (LeastRetail[i].id === "") { break; }
             productInfo.push({
-                id: LeastRetail[i].id,
+                offerID: LeastRetail[i].offeringID,
+                product_key: LeastRetail[i].product_key,
                 product_name: LeastRetail[i].product_name,
                 description: LeastRetail[i].long_description,
                 retail: LeastRetail[i].unit_retail
@@ -145,7 +147,9 @@ var controllers = {
         res.send(ReqResInBrowsing(req, sortingPriceFunction(LeastRetail, "priceDown")));
     },
     productPage: function (req, res) {
-        let obj = LeastRetail.find(x => x.id === req.params.id);
+        console.log(req.params.id);
+        let obj = LeastRetail.find(x => x.offeringID === req.params.id);
+        console.log(obj);
         res.send(obj);
     },
     vendorPage: function (req, res) {
@@ -166,7 +170,77 @@ var controllers = {
         });
         res.send(Vendors);
     },
-    randomItem: randomItem
+    randomItem: randomItem,
+    postuser: function (req, res) {
+        // console.log(req.body);
+        //mongoUpdating(req.body.id, req.body.objName, req.body.objEmailAddress, req.body.objAddress, req.body.objPhone);
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            console.log(req.body.id);
+            var dbo = db.db("HomeDepot");
+            var query = { uid: req.body.id };
+            console.log(query);
+            var newvalues = {
+                $set: {
+
+                    full_name: { first_name: req.body.objFirstName, middle_name: req.body.objMiddleName, last_name: req.body.objLastName },
+                    first_address: { street: req.body.objStreet1, apt: req.body.objapt1, city: req.body.objCity1, state: req.body.objState1, zip_code: req.body.objZipcode1 },
+                    second_address: { street: req.body.objStreet2, apt: req.body.objapt2, city: req.body.objCity2, state: req.body.objState2, zip_code: req.body.objZipcode2 },
+                    phone_number: {
+                        primary_phone: { phone: req.body.objPhone1, ext: req.body.objExt1 }, secondary_phone: { phone: req.body.objPhone2, ext: req.body.objExt2 }
+                    }
+                }
+            };
+            dbo.collection("UserDetail").updateOne(query, newvalues, function (err, result) {
+                if (err) throw err;
+                console.log("Document updated");
+                db.close();
+            });
+        });
+        res.json({ success: true });
+    },
+    user: function (req, res) {
+        var info;
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("HomeDepot");
+            var queryAll = {};
+            dbo.collection("UserDetail").find(queryAll).toArray(function (err, result) {
+
+                if (err) throw err;
+                info = result;
+
+                res.send(info);
+                db.close();
+            });
+        });
+
+    },
+    newuser: function (req, res) {
+        console.log(req.body.id);
+        console.log(req.body.email);
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("HomeDepot");
+            console.log(req);
+            var query = {
+                uid: req.body.id, email: req.body.email,
+                full_name: { first_name: " ", middle_name: " ", last_name: " " },
+                first_address: { street: " ", apt: " ", city: " ", state: " ", zip_code: " " },
+                second_address: { street: " ", apt: " ", city: " ", state: " ", zip_code: " " },
+                phone_number: {
+                    primary_phone: { phone: " ", ext: " " }, secondary_phone: { phone: " ", ext: " " }
+                },
+                cart: 0 // new things
+            };
+            dbo.collection("UserDetail").insertOne(query, function (err, result) {
+                if (err) throw err;
+                console.log("1 document inserted");
+                db.close();
+            });
+        });
+        res.json({ success: true });
+    }
 
 };
 module.exports = controllers;

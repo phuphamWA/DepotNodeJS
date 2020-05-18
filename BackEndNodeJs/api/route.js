@@ -20,4 +20,10 @@ module.exports = function (app) {
         .get(controllers.vendorPage);
     app.route('/randomitem')
         .get(controllers.randomItem);
+    app.route('/post-user')
+        .post(controllers.postuser);
+    app.route('/insert-user')
+        .post(controllers.newuser);
+    app.route('/user')
+        .get(controllers.user);
 };

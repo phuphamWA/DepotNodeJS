@@ -25,7 +25,7 @@ export default () => (
         <Route path='/browsing' component={BrowsingList} />
         <Route path='/signinpage' component={SignIn_SignUp} />
 
-        <Route path="/product/:id" component={Product} />
+        <Route path="/offer/:id" component={Product} />
       
 
     </Layout>

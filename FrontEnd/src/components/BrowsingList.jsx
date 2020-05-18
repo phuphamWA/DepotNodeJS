@@ -54,7 +54,7 @@ export const BrowsingList = (props) => {
                      setTotalRest(totalItem - (number * (countPage - 1)));
                      
                      for (var i = 0; i < totalRest; i++) {
-                         rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                         rest.push({ id: res.data[i].offerID, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
                      }
  
                      setRestItem(rest);
@@ -62,7 +62,7 @@ export const BrowsingList = (props) => {
                  }
                  else {
                      for (var i = 0; i < number; i++) {
-                         initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                         initValue.push({ id: res.data[i].offerID, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
                      }
                   //   console.log(initValue);
                      setItems(initValue)
@@ -76,12 +76,12 @@ export const BrowsingList = (props) => {
         else {
 
             await axios.get("http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location).then((res) => {
-                // console.log(res.data);
+                 console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 
                     for (var i = 0; i < totalRest; i++) {
-                        rest.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                        rest.push({ id: res.data[i].offerID, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
 
                     }
 
@@ -90,7 +90,7 @@ export const BrowsingList = (props) => {
                 }
                 else {
                     for (var i = 0; i < number; i++) {
-                        initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
+                        initValue.push({ id: res.data[i].offerID, product_name: res.data[i].product_name, unit_retail: (Math.round(res.data[i].retail * 100) / 100).toFixed(2) });
 
                     }
                     //console.log(initValue);
@@ -125,7 +125,7 @@ export const BrowsingList = (props) => {
                 `<a target="_blank"><img src="https://images.homedepot-static.com/productImages/8a89c543-1c72-4e6e-972f-0e5babb15a10/svn/husky-claw-hammers-n-s20shd-hn-64_400_compressed.jpg" width="150" height="112" alt="Hammer"/></a>` +
                 `</div>` +
                 `<div class="inline-block flex-1 px-4 py-1 lg:px-8 lg:py-1 ">` +
-                `<a class="text-black text-sm lg:text-xl hover:bg-gray-200" href="product/` + items[i].id + `">` + items[i].product_name + `</a>` +
+                `<a class="text-black text-sm lg:text-xl hover:bg-gray-200" href="offer/` + items[i].id + `">` + items[i].product_name + `</a>` +
                 `<div class="text-xs lg:text-lg pb-4 lg:hidden unit_retail">` + 'Cost: $' + items[i].unit_retail + `</div>` +
 
                 `<div class="text-xs lg:text-md flex-wrap">` + `Delivers Today.` + `</div>` +

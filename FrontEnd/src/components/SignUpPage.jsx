@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Form, FormGroup, FormControl } from 'react-bootstrap';
 import '../css/mainTailwind.css';
 import FireBaseSetup from "../FireBaseSetup";
+import axios from 'axios';
 
 export const SignUpPage = (props) => {
     const [emailVerify, setEmailVerify] = useState(false);
