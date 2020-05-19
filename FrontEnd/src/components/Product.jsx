@@ -46,7 +46,7 @@ export const Product = (props) => {
                 setUserUID(user.uid);
             }
         });
-        console.log(id);
+      
         fetching(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -58,7 +58,7 @@ export const Product = (props) => {
             setOfferingKey(res.data.offeringID);
             setProductKey(res.data.product_key);
             setProductName(res.data.product_name);
-            setSupplierKey(res.data.supplier_key);
+            setSupplierKey(res.data.SupplierKey);
             setVender(res.data.Supplier_name);
             setunitRetail((Math.round(res.data.unit_retail * 100) / 100).toFixed(2));
             setUOM(res.data.uom);
@@ -134,18 +134,18 @@ export const Product = (props) => {
     );
     const AddCartButton = async () => {
 
-    /*    var items = [{
+        var items = [{
             offering_key: offeringKey,
             product_key: productKey,
             product_name: productName,
             supplier_key: supplierKey,
             supplier_name: vendor,
-            unit_retail: discountPrice ? discountPrice : unitRetail,
-            unit_cost: unitofmeasure,
-            uom: uom,
+            unit_retail: unitRetail, 
             quantity: count
         }];
-        await axios.post(PostProduct, {
+        console.log(items);
+        await axios.post("http://localhost:" + PortConnectToBackEnd +"/cartadding" ,items)
+  /*      await axios.post(PostProduct, {
             uid: null,
             total_items: 0,
             offerings: items

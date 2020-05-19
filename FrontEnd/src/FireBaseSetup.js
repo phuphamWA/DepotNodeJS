@@ -2,16 +2,16 @@ import app from 'firebase/app';
 import 'firebase/firebase-firestore';
 import 'firebase/auth';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBbBp0x8XfdXJLKu3yGK6T--a977qGoZ5A",
-    authDomain: "homedepotcs420.firebaseapp.com",
-    databaseURL: "https://homedepotcs420.firebaseio.com",
-    projectId: "homedepotcs420",
-    storageBucket: "homedepotcs420.appspot.com",
-    messagingSenderId: "817785633491",
-    appId: "1:817785633491:web:79e3b37f2745a5d549f226"
+var firebaseConfig = {
+    apiKey: "AIzaSyCZZvTvNeWnROBw0qwRDjSTDu7eT3HPn5w",
+    authDomain: "homedepotweb.firebaseapp.com",
+    databaseURL: "https://homedepotweb.firebaseio.com",
+    projectId: "homedepotweb",
+    storageBucket: "homedepotweb.appspot.com",
+    messagingSenderId: "356352630003",
+    appId: "1:356352630003:web:fa3427779ae8ab6eb16b86",
+    measurementId: "G-NZLWZL94D1"
 };
-
 class FireBaseSetup {
     constructor() {
         app.initializeApp(firebaseConfig);

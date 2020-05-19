@@ -55,11 +55,7 @@ export const NavMenu = (props) => {
                         Browse
                     </div>
                 </Link>
-                <Link to={'/'}>
-                    <div className="NavMenu_Text">
-                        Offers
-                    </div>
-                </Link>
+           
                 <Link to={'/contactus'}>
                     <div className="NavMenu_Text">
                         Contact Us

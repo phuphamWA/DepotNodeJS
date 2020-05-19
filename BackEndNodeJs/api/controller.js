@@ -100,9 +100,9 @@ const randomItem = (req,res) => {
     var productInfo = [];
     for (var i = 0; i < 15; i++) {
         let r = Math.floor(Math.random() * LeastRetail.length);
-        console.log(LeastRetail[r]);
+        //console.log(LeastRetail[r]);
         productInfo.push({
-            id: LeastRetail[r].id,
+            id: LeastRetail[r].offeringID,
             product_name: LeastRetail[r].product_name,
             description: LeastRetail[r].long_description,
             retail: roundNumber(LeastRetail[r].unit_retail)
@@ -111,7 +111,10 @@ const randomItem = (req,res) => {
     }
     res.send(productInfo);
 };
-
+const cartAdding = (req, res) => {
+    console.log(Date());
+    res.send(req.body);
+};
 var controllers = {
     home: function (req, res) { res.send("Welcome Backend Api"); },
     about: function (req, res) {
@@ -175,17 +178,16 @@ var controllers = {
     },
     randomItem: randomItem,
     postuser: function (req, res) {
-        // console.log(req.body);
+         console.log(req.body);
         //mongoUpdating(req.body.id, req.body.objName, req.body.objEmailAddress, req.body.objAddress, req.body.objPhone);
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-            console.log(req.body.id);
+            console.log(req.body);
             var dbo = db.db("HomeDepot");
-            var query = { uid: req.body.id };
+            var query = { email: req.body.email };
             console.log(query);
             var newvalues = {
                 $set: {
-
                     full_name: { first_name: req.body.objFirstName, middle_name: req.body.objMiddleName, last_name: req.body.objLastName },
                     first_address: { street: req.body.objStreet1, apt: req.body.objapt1, city: req.body.objCity1, state: req.body.objState1, zip_code: req.body.objZipcode1 },
                     second_address: { street: req.body.objStreet2, apt: req.body.objapt2, city: req.body.objCity2, state: req.body.objState2, zip_code: req.body.objZipcode2 },
@@ -243,7 +245,8 @@ var controllers = {
             });
         });
         res.json({ success: true });
-    }
+    },
+    cartAdding: cartAdding
 
 };
 module.exports = controllers;

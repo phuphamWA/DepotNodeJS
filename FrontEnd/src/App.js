@@ -15,12 +15,12 @@ import { Vendors } from './components/Vendors';
 
 export default () => (
     <Layout>
-        <Route render={({ location }) => (
+        {/*  <Route render={({ location }) => (
             <TransitionGroup>
                 <CSSTransition
                     key={location.key}
                     timeout={500}
-                    classNames="item">
+                    classNames="item">*/}
                     <Switch>
                         <Route exact path='/' component={Home} />
                         <Route path='/signin' component={SignInPage} />
@@ -34,9 +34,9 @@ export default () => (
 
                         <Route path="/offer/:id" component={Product} />
                     </Switch>
-                </CSSTransition>
+        {/*       </CSSTransition>
             </TransitionGroup>
-        )} />
+        )} />*/}
 
     </Layout>
     );

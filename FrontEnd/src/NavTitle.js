@@ -66,9 +66,7 @@ export const NavTitle = (props) => {
             </div>
             <div className="flex p-4">
 
-                <Link to={'/cart'}>
-
-                    <button onClick={() => { if (props.location.pathname === "/cart") window.location.href = '/cart'; }} alt="button">
+                <Link to={'/cart'}>         
                         <div className="flex mr-6">
                             <svg className="h-8 w-8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70">
                                 <circle cx="82.5" cy="62.5" r="7.5" />
@@ -78,9 +76,7 @@ export const NavTitle = (props) => {
                                 <polygon points="35 50 30 50 10 0 15 0 35 50" />
                             </svg>
                             <div className="text-white text-sm flex font-bold -ml-4"> {countItem}</div>
-                        </div>
-                    </button>
-
+                        </div> 
                 </Link>
 
                 <div>{buttonManage}</div>

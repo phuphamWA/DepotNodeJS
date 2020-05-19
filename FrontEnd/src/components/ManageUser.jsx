@@ -67,7 +67,7 @@ export const ManagePage = (props) => {
             for (var i = 0; i < res.data.length; i++) {
                 initValue.push({
                     uid: res.data[i].uid,
- 
+                    
                     first_name: res.data[i].full_name.first_name,
                     middle_name: res.data[i].full_name.middle_name,
                     last_name: res.data[i].full_name.last_name,
@@ -155,7 +155,7 @@ export const ManagePage = (props) => {
 
         await axios.post('http://localhost:3001/post-user', {
             id: uid,
-
+            objEmail: email,
             objFirstName: firstnameTyping.value === '' ? firstnameTyping.placeholder : firstnameTyping.value,
             objMiddleName: middlenameTyping.value === '' ? middlenameTyping.placeholder : middlenameTyping.value,
             objLastName: lastnameTyping.value === '' ? lastnameTyping.placeholder : lastnameTyping.value,

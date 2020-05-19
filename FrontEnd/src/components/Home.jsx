@@ -30,9 +30,10 @@ export const Home = (props) => {
 
         const tryFetch = async () => {
             await axios.get(GetHomeRandom).then((res) => {
+               // console.log(res);
                 for (var i = 0; i < res.data.length; i++) {
-                    initValue.push({ id: res.data[i].offering_key, product_name: res.data[i].product_name, price: res.data[i].retail });
-                    console.log(res.data[i]);
+                    initValue.push({ id: res.data[i].id, product_name: res.data[i].product_name, price: res.data[i].retail });
+                //    console.log(res.data[i]);
                 }
                 setAdItems(initValue);
                 setLoad(true);
@@ -71,7 +72,7 @@ export const Home = (props) => {
                 <div className="flex w-full   ">
                     <div className="w-full md:w-1/5 border-2 border-double border-orange-600 rounded  ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[0].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[0].id}>
                             <div className="hover:font-bold hover:bg-orange-500 xl:text-xl">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[0].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex"> ${load === false ? null : AdItems[0].price} </div>
@@ -80,7 +81,7 @@ export const Home = (props) => {
                     </div>
                     <div className="w-full md:w-1/5 border-2 border-orange-600 rounded ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[1].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[1].id}>
                             <div className="hover:font-bold hover:bg-orange-500 xl:text-xl">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[1].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex"> ${load === false ? null : AdItems[1].price} </div>
@@ -89,7 +90,7 @@ export const Home = (props) => {
                     </div>
                     <div className="w-full md:w-1/5 border-2 border-orange-600 rounded  ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[2].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[2].id}>
                             <div className="hover:font-bold hover:bg-orange-500 xl:text-xl">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[2].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex"> ${load === false ? null : AdItems[2].price} </div>
@@ -98,7 +99,7 @@ export const Home = (props) => {
                     </div>
                     <div className="w-full md:w-1/5 border-2 border-orange-600 rounded ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[3].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[3].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[3].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex"> ${load === false ? null : AdItems[3].price} </div>
@@ -107,7 +108,7 @@ export const Home = (props) => {
                     </div>
                     <div className="w-full md:w-1/5 border-2 border-orange-600 rounded ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[4].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[4].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[4].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex"> ${load === false ? null : AdItems[4].price} </div>
@@ -118,7 +119,7 @@ export const Home = (props) => {
                 <div className="flex w-full  ">
                     <div className="  border-2 border-orange-600 rounded  w-1/2 md:w-1/5 ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[5].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[5].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[5].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[5].price} </div>
@@ -127,7 +128,7 @@ export const Home = (props) => {
                     </div>
                     <div className="  border-2 border-orange-600 rounded w-1/2 md:w-1/5 ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[6].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[6].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[6].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[6].price} </div>
@@ -136,7 +137,7 @@ export const Home = (props) => {
                     </div>
                     <div className="  border-2 border-orange-600 rounded  hidden ti:block md:w-1/5 ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[7].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[7].id}>
                             <div className="hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[7].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[7].price} </div>
@@ -145,7 +146,7 @@ export const Home = (props) => {
                     </div>
                     <div className="   hidden md:block md:w-1/5 border-2 border-orange-600 rounded">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[8].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[8].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[8].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[8].price} </div>
@@ -154,7 +155,7 @@ export const Home = (props) => {
                     </div>
                     <div className="   border-2 border-orange-600 rounded hidden md:block md:w-1/5 ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[9].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[9].id}>
                             <div className="  hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[9].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[9].price} </div>
@@ -165,7 +166,7 @@ export const Home = (props) => {
                 <div className="flex w-full  ">
                     <div className="   w-1/2 md:w-1/5 border-2 border-orange-600 rounded">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[10].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[10].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[10].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[10].price} </div>
@@ -174,7 +175,7 @@ export const Home = (props) => {
                     </div>
                     <div className="  w-1/2 md:w-1/5  border-2 border-orange-600 rounded">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[11].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[11].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[11].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[11].price} </div>
@@ -183,7 +184,7 @@ export const Home = (props) => {
                     </div>
                     <div className="    hidden ti:block md:w-1/5 border-2 border-orange-600 rounded ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[12].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[12].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[12].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[12].price} </div>
@@ -192,7 +193,7 @@ export const Home = (props) => {
                     </div>
                     <div className="   hidden md:block md:w-1/5 border-2 border-orange-600 rounded ">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[13].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[13].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[13].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[13].price} </div>
@@ -201,7 +202,7 @@ export const Home = (props) => {
                     </div>
                     <div className="    hidden md:block md:w-1/5 border-2 border-orange-600 rounded">
                         <div> {displayRandom()} </div>
-                        <Link to={load === false ? loader : '/offering/' + AdItems[14].id}>
+                        <Link to={load === false ? loader : '/offer/' + AdItems[14].id}>
                             <div className=" hover:font-bold hover:bg-orange-500 xl:text-xl ">
                                 <div className=" text-black md:pt-4 pl-4">{load === false ? null : AdItems[14].product_name}</div>
                                 <div className="text-black pt-2 md:pt-4 pl-4 md:pt-8 flex">${load === false ? null : AdItems[14].price} </div>

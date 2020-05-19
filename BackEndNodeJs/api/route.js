@@ -26,4 +26,6 @@ module.exports = function (app) {
         .post(controllers.newuser);
     app.route('/user')
         .get(controllers.user);
+    app.route('/cartadding')
+        .get(controllers.cartAdding);
 };
