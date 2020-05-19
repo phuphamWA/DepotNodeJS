@@ -10,6 +10,7 @@ export const NavTitle = (props) => {
     const [stateNav, setStateNave] = useState(null);
     const { state } = useContext(Auth);
     const [countItem, setCountItem] = useState(0);
+    const [email, setEmail] = useState("");
     const [/*userToken*/, setUserToken] = useState("");
     let buttonManage;
     useEffect(() => {
@@ -17,7 +18,8 @@ export const NavTitle = (props) => {
             if (user) {
                 user.getIdToken().then(function (idToken) {
                     setUserToken(idToken);
-                    fetching(idToken);
+                    setEmail(user.email);
+                    fetching(user.email);
                 });
                 setStateNave(user);
             }
@@ -25,13 +27,16 @@ export const NavTitle = (props) => {
 
 
     }, []);
-    const fetching = (idToken) => {
-      /*  axios.get(GetCart, TokenHeader(idToken)).then((res) => {
-
-            setCountItem(res.data.offerings.length);
-        }).catch((e) => { setCountItem(0); });*/
-
-    }
+    const fetching = async(e) => {
+        /*  axios.get(GetCart, TokenHeader(idToken)).then((res) => {
+  
+              setCountItem(res.data.offerings.length);
+          }).catch((e) => { setCountItem(0); });*/
+        await axios.post("http://localhost:3001/countcart", {email: e}).then((res) => {
+            console.log(res);
+            setCountItem(res.data.length);
+        }).catch((e) => { setCountItem(0); });
+    };
 
     if (stateNav != null || state.user.hasOwnProperty("user")) {
 

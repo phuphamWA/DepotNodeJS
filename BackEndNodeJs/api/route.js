@@ -27,5 +27,7 @@ module.exports = function (app) {
     app.route('/user')
         .get(controllers.user);
     app.route('/cartadding')
-        .get(controllers.cartAdding);
+        .post(controllers.cartAdding);
+    app.route('/countcart')
+        .post(controllers.countCart);
 };

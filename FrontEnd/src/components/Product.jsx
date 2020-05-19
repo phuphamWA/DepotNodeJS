@@ -13,7 +13,7 @@ import { PortConnectToBackEnd } from '..';
 
 export const Product = (props) => {
     let { id } = useParams();
- 
+    const [email, setEmail] = useState("");
     const [/*UserUID*/, setUserUID] = useState("");
     const [offeringKey, setOfferingKey] = useState('');
     const [productKey, setProductKey] = useState('');
@@ -44,6 +44,7 @@ export const Product = (props) => {
                     setUserToken(idToken);
                 });
                 setUserUID(user.uid);
+                setEmail(user.email);
             }
         });
       
@@ -54,7 +55,7 @@ export const Product = (props) => {
     const fetching = async (offerID) => {
         // you can change this to GetProduct and it will stop using the routes for discounts
         await axios.get("http://localhost:" + PortConnectToBackEnd + "/products/" + offerID).then((res) => {
-            console.log(res);
+          //  console.log(res);
             setOfferingKey(res.data.offeringID);
             setProductKey(res.data.product_key);
             setProductName(res.data.product_name);
@@ -135,6 +136,7 @@ export const Product = (props) => {
     const AddCartButton = async () => {
 
         var items = [{
+            email: email,
             offering_key: offeringKey,
             product_key: productKey,
             product_name: productName,
@@ -143,8 +145,8 @@ export const Product = (props) => {
             unit_retail: unitRetail, 
             quantity: count
         }];
-        console.log(items);
-        await axios.post("http://localhost:" + PortConnectToBackEnd +"/cartadding" ,items)
+       // console.log(items);
+        await axios.post("http://localhost:" + PortConnectToBackEnd + "/cartadding", items).then(res => { console.log("res:",res)})
   /*      await axios.post(PostProduct, {
             uid: null,
             total_items: 0,

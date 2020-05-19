@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var properties = require('../package.json');
 var url = "mongodb+srv://gum:Gumgum123@cluster0-ycsux.azure.mongodb.net/test?retryWrites=true&w=majority";
 
-
+var LeastBrowsing;
 var LeastRetail;
 var Vendors;
 var TotalItem;
@@ -112,12 +112,106 @@ const randomItem = (req,res) => {
     res.send(productInfo);
 };
 const cartAdding = (req, res) => {
-    console.log(Date());
+
+    var query = { email: req.body[0].email };
+    let newPrice, newQuanity, temp, newvalues;
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+/*        console.log("body:", req.body[0].email);
+        console.log("body:", req.body[0].offering_key);*/
+        var dbo = db.db("HomeDepot");
+
+       
+        dbo.collection("UserDetail").findOne(query).then(result => {
+
+            if (result.cartdb.length === 0) {
+                newvalues = {
+                    $push: {
+                        cartdb: {
+                            product_name: req.body[0].product_name,
+                            product_key: req.body[0].product_key,
+                            unit_retail: req.body[0].unit_retail,
+                            quantity: req.body[0].quantity,
+
+                            supplier_name: req.body[0].supplier_name,
+                            supplier_key: req.body[0].supplier_key,
+                            offering_key: req.body[0].offering_key,
+                            time: Date(Date.now()).toString()
+                        }
+                    }
+                };
+
+            }
+            else {
+                temp = result.cartdb;
+
+                temp.forEach(e => {
+                    if (e.offering_key === req.body[0].offering_key) {
+                        newPrice = parseFloat(e.unit_retail) + parseFloat(req.body[0].unit_retail) * req.body[0].quantity;
+                        newQuanity = e.quantity + req.body[0].quantity;
+                        newvalues = {
+                            $set: {
+                                "cartdb.$[]": {
+                                    product_name: req.body[0].product_name,
+                                    product_key: req.body[0].product_key,
+                                    unit_retail: (Math.round(newPrice * 100) / 100).toFixed(2),
+                                    quantity: newQuanity,
+
+                                    supplier_name: req.body[0].supplier_name,
+                                    supplier_key: req.body[0].supplier_key,
+                                    offering_key: req.body[0].offering_key,
+                                    time: Date(Date.now()).toString()
+                                }
+                            }
+                        };
+                    }
+                    else {
+                        newvalues = {
+
+                            $push: {
+                                cartdb: {
+                                    product_name: req.body[0].product_name,
+                                    product_key: req.body[0].product_key,
+                                    unit_retail: req.body[0].unit_retail,
+                                    quantity: req.body[0].quantity,
+                                    /*   quantity: {
+                                           if: { $eq: ["offering_key", req.body[0].offering_key], then: newQuanity, else: req.body[0].quantity }
+                                       },*/
+                                    supplier_name: req.body[0].supplier_name,
+                                    supplier_key: req.body[0].supplier_key,
+                                    offering_key: req.body[0].offering_key,
+                                    time: Date(Date.now()).toString()
+                                }
+                            }
+                        };
+                    }
+
+                });
+            }
+       //     console.log(newvalues);
+            dbo.collection("UserDetail").updateOne(query, newvalues);
+            db.close();
+        });
+    });
     res.send(req.body);
 };
+const countCart = (req, res) => {
+    var count;
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var query = { email: req.body.email };
+        var dbo = db.db("HomeDepot");
+
+        dbo.collection("UserDetail").findOne(query).then(result => {
+             res.send(result.cartdb);
+        });
+
+    });
+   
+};       
 var controllers = {
     home: function (req, res) { res.send("Welcome Backend Api"); },
-    about: function (req, res) {
+    about: function (req, res) { 
         var aboutInfo = {
             name: properties.name,
             version: properties.version
@@ -178,13 +272,13 @@ var controllers = {
     },
     randomItem: randomItem,
     postuser: function (req, res) {
-         console.log(req.body);
+        
         //mongoUpdating(req.body.id, req.body.objName, req.body.objEmailAddress, req.body.objAddress, req.body.objPhone);
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-            console.log(req.body);
+            console.log("body",req.body);
             var dbo = db.db("HomeDepot");
-            var query = { email: req.body.email };
+            var query = { email: req.body.objEmail };
             console.log(query);
             var newvalues = {
                 $set: {
@@ -236,7 +330,8 @@ var controllers = {
                 phone_number: {
                     primary_phone: { phone: " ", ext: " " }, secondary_phone: { phone: " ", ext: " " }
                 },
-                cart: 0 // new things
+                cartNumber: 0, // new things
+                cartdb:[]
             };
             dbo.collection("UserDetail").insertOne(query, function (err, result) {
                 if (err) throw err;
@@ -246,8 +341,8 @@ var controllers = {
         });
         res.json({ success: true });
     },
-    cartAdding: cartAdding
-
+    cartAdding: cartAdding,
+    countCart: countCart
 };
 module.exports = controllers;
 
