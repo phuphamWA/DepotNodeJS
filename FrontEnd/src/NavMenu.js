@@ -85,4 +85,4 @@ document.addEventListener('DOMContentLoaded', function () {
         $navbarBurgers.forEach(function ($el) { $el.addEventListener('click', function () { $target.classList.toggle('hidden'); }); });
     }
 });
-export default withRouter(NavMenu);
+//export default withRouter(NavMenu);

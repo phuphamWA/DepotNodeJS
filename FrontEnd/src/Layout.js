@@ -1,6 +1,6 @@
 import React from 'react';
-import NavTitle from './NavTitle';
-import NavMenu from './NavMenu';
+import { NavTitle } from './NavTitle';
+import {NavMenu} from './NavMenu';
 
 export default props => (
     <>

@@ -6,7 +6,7 @@ import FireBaseSetup from './FireBaseSetup';
 import axios from 'axios';
 import { GetCart, TokenHeader } from './ListOfLinks';
 
-const NavTitle = (props) => {
+export const NavTitle = (props) => {
     const [stateNav, setStateNave] = useState(null);
     const { state } = useContext(Auth);
     const [countItem, setCountItem] = useState(0);
@@ -88,4 +88,4 @@ const NavTitle = (props) => {
         </nav>
     )
 }
-export default withRouter(NavTitle);
+//export default withRouter(NavTitle);

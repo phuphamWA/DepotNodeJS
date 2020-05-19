@@ -5,7 +5,7 @@ import Dropdown from 'react-dropdown';
 import '../css/mainStyle.css';
 
 import { UserManageMobileProvider } from './UserManageContext';
-import NavTitle from '../NavTitle';
+//import NavTitle from '../NavTitle';
 
 export const ManagePage = (props) => {
     const [email, setEmail] = useState("");
@@ -539,13 +539,13 @@ export const ManagePage = (props) => {
         </div>
     </>
     )
-    const providePage = (<>
+   /* const providePage = (<>
         <UserManageMobileProvider value={Page}>
             <div className="hidden">
                 <NavTitle />
             </div>
         </UserManageMobileProvider>
-    </>)
+    </>)*/
     const backButton = (<> <br />
         <button className="justify-center w-full rounded border-2 h-full border-orange-500" onClick={() => setPage("default")}> BackButton</button>
     </>);
@@ -588,7 +588,7 @@ export const ManagePage = (props) => {
                     })()}
                 </div>
                 {Page == "default" ? null : backButton}
-                {providePage}
+                
             </div>
         </>)
 }
