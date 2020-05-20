@@ -12,6 +12,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { SignIn_SignUp } from './components/SignIn_SignUp';
 import { BrowsingList } from './components/BrowsingList';
 import { Vendors } from './components/Vendors';
+import { Cart } from './components/Cart';
 
 export default () => (
     <Layout>
@@ -31,7 +32,7 @@ export default () => (
                         <Route path="/products/:idv" component={Vendors} />
                         <Route path='/browsing' component={BrowsingList} />
                         <Route path='/signinpage' component={SignIn_SignUp} />
-
+                        <Route path='/cart' component={Cart} />
                         <Route path="/offer/:id" component={Product} />
                     </Switch>
         {/*       </CSSTransition>
