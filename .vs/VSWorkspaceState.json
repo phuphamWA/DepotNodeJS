@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\BackEndNodeJs",
-    "\\BackEndNodeJs\\api",
-    "\\FrontEnd",
-    "\\FrontEnd\\src",
-    "\\FrontEnd\\src\\components"
+    ""
   ],
-  "SelectedNode": "\\FrontEnd\\src\\NavMenu.js",
   "PreviewInSolutionExplorer": false
 }

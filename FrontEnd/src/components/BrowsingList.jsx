@@ -76,7 +76,7 @@ export const BrowsingList = (props) => {
         else {
 
             await axios.get("http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location).then((res) => {
-                 console.log(res.data);
+               //  console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
 

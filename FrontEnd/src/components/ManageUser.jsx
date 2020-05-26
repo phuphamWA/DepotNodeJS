@@ -5,6 +5,7 @@ import Dropdown from 'react-dropdown';
 import '../css/mainStyle.css';
 
 import { UserManageMobileProvider } from './UserManageContext';
+import { OrderHistory } from './OrderHistory';
 //import NavTitle from '../NavTitle';
 
 export const ManagePage = (props) => {
@@ -32,6 +33,7 @@ export const ManagePage = (props) => {
     const [objExt1, setObjExt1] = useState("");
     const [objExt2, setObjExt2] = useState("");
 
+    const [historyItem, setHistoryItem] = useState([]);
     const [userToken, setUserToken] = useState("");
     var emailInser, uidInsert;
 
@@ -123,7 +125,10 @@ export const ManagePage = (props) => {
                 })
             }
         })
-
+        await axios.post("http://localhost:3001/purchasehistory", { email: email }).then(res => {
+            console.log(res.data);
+            setHistoryItem(res.data);
+        })
     };
 
     const page_title = (
@@ -176,7 +181,7 @@ export const ManagePage = (props) => {
         }).then((res) => {
             if (res.data !== null) {
 
-                console.log(res);
+             
                 window.location.href = '/manageuser';
             };
         })
@@ -448,11 +453,20 @@ export const ManagePage = (props) => {
             </div>
         </>
     )};
-    const OrderPage = (
-        <>
-            Hi OrderPage
-        </>
-    )
+    const OrderPage = () => {
+        const ListItem =
+            historyItem.map((e, i) => {
+                return (<>
+                    <br />
+                    <OrderHistory value={e} />
+                </>);
+            });
+        return (<div className="border-orange-500 rounded border-2 p-2">
+            {/* {load ? ListItem : null}*/}
+            {ListItem}
+        </div>
+        )
+    }
     const WishListPage = (
         <>
             Hi WishListPage
@@ -562,7 +576,7 @@ export const ManagePage = (props) => {
                             case "bold_address": return bold_address;
                             case "editPage": return my_address;
                             case "passwordPage": return <PasswordPage/>;
-                            case "orderPage": return OrderPage;
+                            case "orderPage": return <OrderPage/>;
                             case "wishlistPage": return WishListPage;
                             case "helpPage": return HelpPage;
                             default: return bold_address;
@@ -580,7 +594,7 @@ export const ManagePage = (props) => {
                             case "bold_address": return bold_address;
                             case "editPage": return my_address;
                             case "passwordPage": return PasswordPage;
-                            case "orderPage": return OrderPage;
+                            case "orderPage": return <OrderPage />;
                             case "wishlistPage": return WishListPage;
                             case "helpPage": return HelpPage;
                             default: return left_menu_mobile;

@@ -1,8 +1,6 @@
 import React, { useState, /*useEffect*/ } from 'react';
 import axios from 'axios';
 
-//import { PutCartUpdate, TokenHeader } from '../ListOfLinks';
-
 export var displayRandom = () => {
     var rand = Math.floor(Math.random() * 100);
     var imgStr = "https://generative-placeholders.glitch.me/image?width=500&height=500&img=".concat(rand);
@@ -10,13 +8,15 @@ export var displayRandom = () => {
 }
 export const CartItem = (props) => {
     const [count, setCount] = useState(props.value.quantity);
-
+    const [totalCost, setTotalCost] = useState('');
     const [/*removeItem*/, setRemoveItem] = useState(false);
 
     const UpdateCart = async () => {
-   //     await axios.put(PutCartUpdate(props.value.offering_key, count), {}, TokenHeader(props.token)).then((res) => { });
-
-        window.location.href = '/cart';
+        var upTotalCost = document.getElementById('totalcost').innerHTML;
+        console.log(props.value);
+        //     await axios.put(PutCartUpdate(props.value.offering_key, count), {}, TokenHeader(props.token)).then((res) => { });
+        axios.post("http://localhost:3001/updatecart", { email: props.email, quantity: count, totalCost: upTotalCost, propsOne: props.value.offering_key });
+        window.location.replace('/cart');
     }
 
     const presentCounter = (<div type="number" className="h-10 font-semibold flex justify-center text-gray-500 w-1/3 items-center text-2xl" > {count} </div>)
@@ -31,20 +31,32 @@ export const CartItem = (props) => {
                     <div className="mx-20 flex items-center text-2xl h-10">-</div>
                 </button>
                 {count === props.value.quantity ? presentCounter : changeCounter}
-                <button onClick={() => setCount(count + 1)} className="flex justify-center rounded text-gray-700 hover:text-gray-700 hover:bg-orange-400 h-full text-right w-1/3 border-l-2 border-orange-500">
+                <button onClick={() => plusItem()} className="flex justify-center rounded text-gray-700 hover:text-gray-700 hover:bg-orange-400 h-full text-right w-1/3 border-l-2 border-orange-500">
                     <div className="flex items-center text-2xl h-10" >+</div>
                 </button>
             </div>
         </div>
     );
 
-
+    const plusItem = () => {
+        setCount(count + 1);
+        setTotalCost((Math.round((count + 1) * props.value.unit_retail * 100) / 100).toFixed(2));
+      
+    }
+ 
     const minusItem = () => {
         setCount(count - 1);
-        if (count === 1) { setCount(1) }
+        if (count === 1) {
+            setCount(1)
+            setTotalCost((Math.round((count ) * props.value.unit_retail * 100) / 100).toFixed(2));
+        }
+        else
+            setTotalCost((Math.round((count - 1) * props.value.unit_retail * 100) / 100).toFixed(2));
+      
     }
 
     const removeCartItem = async () => {
+        axios.post("http://localhost:3001/removecart", { email: props.email, quantity: count,  propsOne: props.value.offering_key });
      //   await axios.put(PutCartUpdate(props.value.offering_key, 0), {}, TokenHeader(props.token)).then((res) => { setRemoveItem(true); });
         window.location.href = '/cart';
     }
@@ -53,10 +65,10 @@ export const CartItem = (props) => {
         window.location.assign("/offer/" + props.value.offering_key);
     }
     var multi2 = (a, b) => {
-        console.log(a,b)
-        return (parseInt(a) * parseInt (b)).toFixed(2);
+
+        return (Math.round(a * b * 100) / 100).toFixed(2);
     }
-    console.log(props.value.quantity);
+    //console.log(props.email);
     const container = (<div>
         <div className="flex w-full">
             <div className="w-full">
@@ -66,9 +78,9 @@ export const CartItem = (props) => {
                         <div className="md:hidden">
                             {counters}
                             {count === props.value.quantity ? <>
-                                <div className="font-bold text-center text-gray-500"> Total: ${props.value.totalOfferingCost} </div> </> :
+                                <div className="font-bold text-center text-gray-500"> Total: ${props.value.total_cost} </div> </> :
                                 <>
-                                    <div className="font-bold text-center "> Total: ${multi2(props.value.unit_retail, count)}</div>
+                                    <div className="font-bold text-center flex "> Total: $<p id="totalcost">{totalCost}</p></div>
                                     <div>{changeUpdateMobile}</div>
                                 </>
                             }
@@ -86,9 +98,9 @@ export const CartItem = (props) => {
                     <div className="hidden md:block md:w-1/4 justify-center ">
                         <div className="m-0 md:mr-2">{counters}</div>
                         {count === props.value.quantity ? <>
-                            <div className="font-bold text-center text-gray-500 md:mr-4 md:pb-2"> Total: ${props.value.totalOfferingCost} </div> </> :
+                            <div className="font-bold text-center text-gray-500 md:mr-4 md:pb-2"> Total: ${props.value.total_cost} </div> </> :
                             <>
-                                <div className="font-bold text-center"> Total: ${multi2(props.value.unit_retail, count)}</div>
+                                <div className="font-bold text-center flex"> Total: $<p id="totalcost">{totalCost}</p></div>
                                 <div className="my-2">{changeUpdate}</div>
                             </>
                         }
@@ -128,7 +140,7 @@ export const CartItemCheckOut = (props) => {
                         Quantity: {props.value.quantity}
                     </div>
                     <div className="text-base md:text-xl font-bold text-right pt-4 pr-2">
-                        Total Cost: ${props.value.totalOfferingCost}
+                        Total Cost: ${props.value.total_cost}
                     </div>
                 </div>
             </div>

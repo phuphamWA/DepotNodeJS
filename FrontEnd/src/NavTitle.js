@@ -33,7 +33,7 @@ export const NavTitle = (props) => {
               setCountItem(res.data.offerings.length);
           }).catch((e) => { setCountItem(0); });*/
         await axios.post("http://localhost:3001/countcart", {email: e}).then((res) => {
-            console.log(res);
+           // console.log(res);
             setCountItem(res.data.length);
         }).catch((e) => { setCountItem(0); });
     };

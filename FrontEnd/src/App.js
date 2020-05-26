@@ -13,6 +13,8 @@ import { SignIn_SignUp } from './components/SignIn_SignUp';
 import { BrowsingList } from './components/BrowsingList';
 import { Vendors } from './components/Vendors';
 import { Cart } from './components/Cart';
+import { CheckOut } from './components/CheckOut';
+import { ConfirmationPage } from './components/ConfirmationPage';
 
 export default () => (
     <Layout>
@@ -34,6 +36,8 @@ export default () => (
                         <Route path='/signinpage' component={SignIn_SignUp} />
                         <Route path='/cart' component={Cart} />
                         <Route path="/offer/:id" component={Product} />
+                        <Route path="/checkout" component={CheckOut} />
+                        <Route path="/confirmation" component={ConfirmationPage} />
                     </Switch>
         {/*       </CSSTransition>
             </TransitionGroup>

@@ -3,7 +3,6 @@ var MongoClient = require('mongodb').MongoClient;
 var properties = require('../package.json');
 var url = "mongodb+srv://gum:Gumgum123@cluster0-ycsux.azure.mongodb.net/test?retryWrites=true&w=majority";
 
-var LeastBrowsing;
 var LeastRetail;
 var Vendors;
 var TotalItem;
@@ -95,7 +94,32 @@ var replacing = (str) => {
     str = str.substring(1, str.length - 1);
     return str;
 };
+const confirmation = (req, res) => {
+    console.log(req.body.invoiceObj);
+    var query = { email: req.body.email  };
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
 
+        var dbo = db.db("HomeDepot");
+        dbo.collection("UserDetail").update(query, {
+            $push: {
+                historypurchases: req.body.invoiceObj
+            }
+        });
+        res.send("Done");
+    });
+};
+const purchasehistory = (req, res) => {
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        var query = { email: req.body.email };
+        var dbo = db.db("HomeDepot");
+        dbo.collection("UserDetail").findOne(query).then(result => {
+            res.send(result.historypurchases);
+        });
+ 
+    });
+}
 const randomItem = (req,res) => {
     var productInfo = [];
     for (var i = 0; i < 15; i++) {
@@ -117,11 +141,8 @@ const cartAdding = (req, res) => {
     let newPrice, newQuanity, temp, newvalues;
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
-/*        console.log("body:", req.body[0].email);
-        console.log("body:", req.body[0].offering_key);*/
-        var dbo = db.db("HomeDepot");
 
-       
+        var dbo = db.db("HomeDepot");  
         dbo.collection("UserDetail").findOne(query).then(result => {
 
             if (result.cartdb.length === 0) {
@@ -136,6 +157,7 @@ const cartAdding = (req, res) => {
                             supplier_name: req.body[0].supplier_name,
                             supplier_key: req.body[0].supplier_key,
                             offering_key: req.body[0].offering_key,
+                            total_cost: (Math.round(parseFloat(req.body[0].quantity) * parseFloat(req.body[0].unit_retail) * 100) / 100).toFixed(2),
                             time: Date(Date.now()).toString()
                         }
                     }
@@ -160,6 +182,8 @@ const cartAdding = (req, res) => {
                                     supplier_name: req.body[0].supplier_name,
                                     supplier_key: req.body[0].supplier_key,
                                     offering_key: req.body[0].offering_key,
+                                   
+                                    total_cost: (Math.round(newPrice * parseFloat(newQuanity) * 100) / 100).toFixed(2),
                                     time: Date(Date.now()).toString()
                                 }
                             }
@@ -174,12 +198,11 @@ const cartAdding = (req, res) => {
                                     product_key: req.body[0].product_key,
                                     unit_retail: req.body[0].unit_retail,
                                     quantity: req.body[0].quantity,
-                                    /*   quantity: {
-                                           if: { $eq: ["offering_key", req.body[0].offering_key], then: newQuanity, else: req.body[0].quantity }
-                                       },*/
+
                                     supplier_name: req.body[0].supplier_name,
                                     supplier_key: req.body[0].supplier_key,
                                     offering_key: req.body[0].offering_key,
+                                    total_cost: (Math.round(parseFloat(req.body[0].quantity) * parseFloat(req.body[0].unit_retail) * 100) / 100).toFixed(2),
                                     time: Date(Date.now()).toString()
                                 }
                             }
@@ -196,19 +219,66 @@ const cartAdding = (req, res) => {
     res.send(req.body);
 };
 const countCart = (req, res) => {
-    var count;
+    var query = { email: req.body.email };
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
-        var query = { email: req.body.email };
+ 
         var dbo = db.db("HomeDepot");
-
         dbo.collection("UserDetail").findOne(query).then(result => {
              res.send(result.cartdb);
         });
 
     });
    
-};       
+};     
+const upCart = (req, res) => {
+    console.log(req.body);
+    var query = { email: req.body.email, "cartdb.offering_key": req.body.propsOne  };
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+       
+        var dbo = db.db("HomeDepot");
+        dbo.collection("UserDetail").update(query, {
+            $set: {
+                "cartdb.$.quantity": req.body.quantity,
+                "cartdb.$.total_cost": req.body.totalCost
+            }
+        });
+      
+    });
+    res.send("Cart Updated");
+};
+const removeCart = (req, res) => {
+    //console.log(req.body);
+    var query = { email: req.body.email};
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+
+        var dbo = db.db("HomeDepot");
+        dbo.collection("UserDetail").update(query, {
+            $pull: {
+                'cartdb': {
+                    offering_key:req.body.propsOne
+                } 
+        }
+        });
+
+    });
+};
+const emptycart = (req, res) => {
+    var query = { email: req.body.email };
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+
+        var dbo = db.db("HomeDepot");
+        dbo.collection("UserDetail").update(query, {
+            $set: {
+                cartdb: []
+            }
+        });
+
+    });
+};
 var controllers = {
     home: function (req, res) { res.send("Welcome Backend Api"); },
     about: function (req, res) { 
@@ -331,7 +401,8 @@ var controllers = {
                     primary_phone: { phone: " ", ext: " " }, secondary_phone: { phone: " ", ext: " " }
                 },
                 cartNumber: 0, // new things
-                cartdb:[]
+                cartdb: [],
+                historypurchases:[]
             };
             dbo.collection("UserDetail").insertOne(query, function (err, result) {
                 if (err) throw err;
@@ -342,7 +413,12 @@ var controllers = {
         res.json({ success: true });
     },
     cartAdding: cartAdding,
-    countCart: countCart
+    countCart: countCart,
+    upCart: upCart,
+    confirmation: confirmation,
+    removecart: removeCart,
+    purchasehistory: purchasehistory,
+    emptycart: emptycart
 };
 module.exports = controllers;
 

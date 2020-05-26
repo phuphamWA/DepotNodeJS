@@ -3,10 +3,12 @@ import axios from 'axios';
 import FireBaseSetup from '../FireBaseSetup';
 import { CartItem } from './CartItem';
 import { loader } from '../ListOfLinks';
+import { PortConnectToBackEnd } from '..';
 
 
 export const Cart = (props) => {
     const [/*UserUID*/, setUserUID] = useState("");
+    const [email, setEmail] = useState('');
     const [ItemArray, setItemArray] = useState([]);
     const [load, setLoad] = useState(false);
     const [totalcost, setTotalCost] = useState(0);
@@ -18,6 +20,7 @@ export const Cart = (props) => {
             if (user) {
                 user.getIdToken().then(function (idToken) {
                     setUserToken(idToken);
+                    setEmail(user.email);
                     fetching(user.email);
                 });
                 setUserUID(user.uid);
@@ -27,23 +30,23 @@ export const Cart = (props) => {
         });
     }, []);
     const fetching = async (e) => {
-/*
-        await axios.get(GetCart, TokenHeader(idToken)).then((res) => {
-            setTotalCost(res.data.total_cost);
-            setItemArray(res.data.offerings);
-
-        });*/
-        await axios.post("http://localhost:3001/countcart", { email: e }).then((res) => {
-            //console.log(res);
+        var ToTalAllCart = 0;
+        await axios.post("http://localhost:" + PortConnectToBackEnd + "/countcart", { email: e }).then((res) => {
+          
+            for (var i of res.data) {
+                console.log(i.total_cost);
+                ToTalAllCart += parseFloat(i.total_cost);
+            }
+            setTotalCost((Math.round(ToTalAllCart * 100) / 100).toFixed(2));
             setItemArray(res.data);
-        }).catch((e) => { console.log("No data")});
-    }
+        }).catch((e) => { window.location.href = '/'; });
+    };
     const ListItem =
         ItemArray.map(e => {
-            console.log(e);
+            
             return (<>
                 <br />
-                <CartItem value={e} token={userToken} />
+                <CartItem value={e} token={userToken} email={email} />
             </>);
         });
     const container = (

@@ -30,4 +30,14 @@ module.exports = function (app) {
         .post(controllers.cartAdding);
     app.route('/countcart')
         .post(controllers.countCart);
+    app.route('/updatecart')
+        .post(controllers.upCart);
+    app.route('/removecart')
+        .post(controllers.removecart);
+    app.route('/confirmation')
+        .post(controllers.confirmation);
+    app.route('/purchasehistory')
+        .post(controllers.purchasehistory);
+    app.route('/emptycart')
+        .post(controllers.emptycart);
 };

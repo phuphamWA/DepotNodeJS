@@ -3,29 +3,30 @@ import { useState } from 'react';
 import { Collapse } from 'react-collapse';
 
 export const OrderHistory = (props) => {
-    var offerArray = props.value.offerings;
+    console.log(props.value);
+    var offerArray = props.value.itemArray;
     const [isOpen, setIsOpen] = useState(false);
 
     return (<>
     
         <div className=" ">
             <div className="bg-gray-400">
-                <div onClick={() => setIsOpen(!isOpen)} className="ml-2 pt-2 text-md md:text-lg " >Date: {props.value.date}</div>
-                <div onClick={() => setIsOpen(!isOpen)} className="ml-2 items-right text-sm" > Order#: {props.value.orderId}</div>  
+                <div onClick={() => setIsOpen(!isOpen)} className="ml-2 pt-2 text-md md:text-lg " >Date: {props.value.time}</div>
+                <div onClick={() => setIsOpen(!isOpen)} className="ml-2 items-right text-sm" > Order#: {props.value.offerNumber}</div>  
             </div>
             <Collapse isOpened={!isOpen}>  
               
-                <EachOffer orderID={props.value.orderId} offerings={offerArray} />
-                <br/>
-                <div className="mr-2 text-right font-bold">Total Items: {props.value.total_items}</div>
-                <div className="mr-2 text-right font-bold">Total Price: ${props.value.total_cost}</div>
+                <EachOffer orderID={props.value.offerNumber} offerings={offerArray} />
+                <br />
+                <div className="mr-2 text-right font-bold">Total Items: {props.value.itemArray.length-1}</div>
+                <div className="mr-2 text-right font-bold">Total Price: ${props.value.totalCost}</div>
             </Collapse >
             </div>
         </>
     );
 }
 const linktoItem = (itemId) => {
-    window.location.assign("/offering/" + itemId);
+    window.location.assign("/offer/" + itemId);
 }
 const EachOffer = (props) => {
     const array = props.offerings;

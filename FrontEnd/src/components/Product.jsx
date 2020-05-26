@@ -145,14 +145,16 @@ export const Product = (props) => {
             unit_retail: unitRetail, 
             quantity: count
         }];
-       // console.log(items);
-        await axios.post("http://localhost:" + PortConnectToBackEnd + "/cartadding", items).then(res => { console.log("res:",res)})
+        console.log(items.offering_key);
+        await axios.post("http://localhost:" + PortConnectToBackEnd + "/cartadding", items).then(() => {
+            window.location.href = '/offer/' + id;
+        })
   /*      await axios.post(PostProduct, {
             uid: null,
             total_items: 0,
             offerings: items
         }, TokenHeader(userToken));
-        window.location.href = '/product/' + id;*/
+        window.location.href = '/offer/' + id;*/
     }
 
     const vendor_name = (
