@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Collapse } from 'react-collapse';
 import FireBaseSetup from '../FireBaseSetup';
 import { CartItemCheckOut } from './CartItem';
-import {loader, CountCart, EmptyCart, ClickConfirm } from '../ListOfLinks';
-
+import { loader, CountCart, EmptyCart, ClickConfirm } from '../ListOfLinks';
+import { Link } from 'react-router-dom';
 export const CheckOut = () => {
     const [email,setEmail] = useState("");
     const [ItemArray, setItemArray] = useState([]);
@@ -47,18 +47,20 @@ export const CheckOut = () => {
     const PlaceOrderApi = async () => {
         var time = Date(Date.now()).toString();
         var invoiceObj = {
-            itemArray : ItemArray,
+            itemArray: ItemArray,
             time: time,
             totalCost: totalcost,
             offerNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         }
-      
-        console.log(invoiceObj);
-        axios.post(ClickConfirm, { invoiceObj, email: email });  
-        axios.post(EmptyCart, { email: email });
-       window.location.assign('/confirmation')
-         
 
+        //console.log(invoiceObj);
+        await axios.post(ClickConfirm, { invoiceObj, email: email }).then(() => {
+            axios.post(EmptyCart, { email: email })
+        });
+        window.location.replace("/confirmation");
+            
+          
+        
     }
 
     const ListItem =
@@ -74,9 +76,11 @@ export const CheckOut = () => {
             <div className=" titlePage pt-4 lg:text-3xl"> Check Out</div>
             <div className="w-full md:w-1/3 md:float-right ">
                 <div className="text-md md:text-xl font-extrabold text-center md:text-right py-4">Your Total Price: ${totalcost}</div>
-                <div className="pb-4 m-2 md:m-0 md:float-right">
-                    <button onClick={PlaceOrderApi} className="w-full h-12 md:w-64 rounded border border-orange-500 text-base font-bold" >Place Order</button>
-                </div>
+                <button to='/confirmation' onClick={PlaceOrderApi} className="w-full h-12 md:w-64 rounded border border-orange-500 text-base font-bold" >
+                    <div className="pb-4 m-2 md:m-0 md:float-right">
+                       Place Order
+                    </div>
+                </button>
                 <hr className="md:hidden m-2 pb-1 px-4 bg-orange-500" />
             </div>
             <div className="w-full md:w-2/3">

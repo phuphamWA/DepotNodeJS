@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BackEndNodeJs",
+    "\\BackEndNodeJs\\api",
+    "\\FrontEnd",
+    "\\FrontEnd\\src",
+    "\\FrontEnd\\src\\components"
   ],
+  "SelectedNode": "\\FrontEnd\\src\\ListOfLinks.js",
   "PreviewInSolutionExplorer": false
 }
