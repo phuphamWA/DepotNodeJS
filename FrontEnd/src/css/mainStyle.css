@@ -72,7 +72,7 @@
 }
 
 .NavTitle_Icons_Boxed {
-    @apply p-2 border border-white rounded
+    @apply p-2 border border-white rounded;
 }
 
 .NavMenu_Container {
@@ -88,12 +88,12 @@
 }
 
 .product_id {
-    @apply bg-green-500
+    @apply bg-green-500;
 }
 
 @screen lg {
     .product_id {
-        @apply bg-green-500
+        @apply bg-green-500;
     }
     
     .adSlide {
@@ -114,7 +114,7 @@
     }
 
     .NavMenu_Sign_Text {
-        @apply text-lg block my-0 inline-block text-orange-100
+        @apply text-lg block my-0 inline-block text-orange-100;
     }
 
     .NavMenu_Text:hover {
