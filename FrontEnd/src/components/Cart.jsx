@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FireBaseSetup from '../FireBaseSetup';
 import { CartItem } from './CartItem';
-import { loader } from '../ListOfLinks';
+import { loader, CountCart } from '../ListOfLinks';
 import { PortConnectToBackEnd } from '..';
 
 
@@ -31,7 +31,7 @@ export const Cart = (props) => {
     }, []);
     const fetching = async (e) => {
         var ToTalAllCart = 0;
-        await axios.post("http://localhost:" + PortConnectToBackEnd + "/countcart", { email: e }).then((res) => {
+        await axios.post(CountCart, { email: e }).then((res) => {
           
             for (var i of res.data) {
                 console.log(i.total_cost);

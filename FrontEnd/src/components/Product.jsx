@@ -8,7 +8,7 @@ import axios from 'axios';
 import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import FireBaseSetup from '../FireBaseSetup';
-import { loader, ProductPage } from '../ListOfLinks';
+import { loader, ProductPage, CartAdding } from '../ListOfLinks';
 import { PortConnectToBackEnd } from '..';
 
 export const Product = (props) => {
@@ -146,7 +146,7 @@ export const Product = (props) => {
             quantity: count
         }];
         console.log(items.offering_key);
-        await axios.post("http://localhost:" + PortConnectToBackEnd + "/cartadding", items).then(() => {
+        await axios.post(CartAdding, items).then(() => {
             window.location.href = '/offer/' + id;
         })
   /*      await axios.post(PostProduct, {

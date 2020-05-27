@@ -42,7 +42,7 @@ export const BrowsingList = (props) => {
 
     const sortFetching = async (number, location, sortPrice) => {//http://localhost:3001/sortprice/descending/item/15/page/1
         await axios.get(GetBrowsingPage).then((res) => {
-            console.log(res);
+        //    console.log(res);
             setTotalItem(res.data.length - 1);
             setCountPage(Math.round(res.data.length / number));
 

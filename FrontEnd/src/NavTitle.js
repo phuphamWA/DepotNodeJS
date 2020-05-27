@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Auth } from '../src/authContext';
 import FireBaseSetup from './FireBaseSetup';
 import axios from 'axios';
-import { GetCart, TokenHeader } from './ListOfLinks';
+import { GetCart, TokenHeader, CountCart } from './ListOfLinks';
 
 export const NavTitle = (props) => {
     const [stateNav, setStateNave] = useState(null);
@@ -32,7 +32,7 @@ export const NavTitle = (props) => {
   
               setCountItem(res.data.offerings.length);
           }).catch((e) => { setCountItem(0); });*/
-        await axios.post("http://localhost:3001/countcart", {email: e}).then((res) => {
+        await axios.post(CountCart, { email: e }).then((res) => {
            // console.log(res);
             setCountItem(res.data.length);
         }).catch((e) => { setCountItem(0); });

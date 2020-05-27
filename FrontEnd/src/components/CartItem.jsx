@@ -1,5 +1,6 @@
 import React, { useState, /*useEffect*/ } from 'react';
 import axios from 'axios';
+import { RemoveCart } from '../ListOfLinks';
 
 export var displayRandom = () => {
     var rand = Math.floor(Math.random() * 100);
@@ -13,10 +14,10 @@ export const CartItem = (props) => {
 
     const UpdateCart = async () => {
         var upTotalCost = document.getElementById('totalcost').innerHTML;
-        console.log(props.value);
-        //     await axios.put(PutCartUpdate(props.value.offering_key, count), {}, TokenHeader(props.token)).then((res) => { });
-        axios.post("http://localhost:3001/updatecart", { email: props.email, quantity: count, totalCost: upTotalCost, propsOne: props.value.offering_key });
-        window.location.replace('/cart');
+        console.log(totalCost);
+    
+        axios.post(UpdateCart, { email: props.email, quantity: count, totalCost: upTotalCost, propsOne: props.value.offering_key });
+      //  window.location.replace('/cart');
     }
 
     const presentCounter = (<div type="number" className="h-10 font-semibold flex justify-center text-gray-500 w-1/3 items-center text-2xl" > {count} </div>)
@@ -56,7 +57,7 @@ export const CartItem = (props) => {
     }
 
     const removeCartItem = async () => {
-        axios.post("http://localhost:3001/removecart", { email: props.email, quantity: count,  propsOne: props.value.offering_key });
+        axios.post(RemoveCart, { email: props.email, quantity: count, propsOne: props.value.offering_key });
      //   await axios.put(PutCartUpdate(props.value.offering_key, 0), {}, TokenHeader(props.token)).then((res) => { setRemoveItem(true); });
         window.location.href = '/cart';
     }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Collapse } from 'react-collapse';
 import FireBaseSetup from '../FireBaseSetup';
 import { CartItemCheckOut } from './CartItem';
-import {loader } from '../ListOfLinks';
+import {loader, CountCart } from '../ListOfLinks';
 
 export const CheckOut = () => {
     const [email,setEmail] = useState("");
@@ -31,8 +31,8 @@ export const CheckOut = () => {
     }, [])
 
     const fetching = async (e) => {
-       
-        await axios.post("http://localhost:3001/countcart", { email: e }).then((res) => {
+
+        await axios.post(CountCart, { email: e }).then((res) => {
             //console.log(res.data);
             for (var i of res.data) {
          

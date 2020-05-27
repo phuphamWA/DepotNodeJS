@@ -15,8 +15,12 @@ export const GetHomeRandom = env + "/randomitem";
 export const ProductPage = (offerID) => {
     return env + "/products/" + offerID;
 } 
-
-
+export const CartAdding = env + "/cartadding";
+export const CountCart = env + "/countcart";
+export const ClickConfirm = env + "/confirmation";
+export const EmptyCart = env + "/emptycart";
+export const UpdateCart = env + "/updatecart";
+export const RemoveCart = env + "/removecart";
 /*export const TokenHeader = (tokenID) => {
     var config = {
         headers: {
