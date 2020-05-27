@@ -8,7 +8,7 @@ import axios from 'axios';
 import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import FireBaseSetup from '../FireBaseSetup';
-import { loader } from '../ListOfLinks';
+import { loader, ProductPage } from '../ListOfLinks';
 import { PortConnectToBackEnd } from '..';
 
 export const Product = (props) => {
@@ -54,7 +54,7 @@ export const Product = (props) => {
 
     const fetching = async (offerID) => {
         // you can change this to GetProduct and it will stop using the routes for discounts
-        await axios.get("http://localhost:" + PortConnectToBackEnd + "/products/" + offerID).then((res) => {
+        await axios.get(ProductPage(offerID)).then((res) => {
           //  console.log(res);
             setOfferingKey(res.data.offeringID);
             setProductKey(res.data.product_key);

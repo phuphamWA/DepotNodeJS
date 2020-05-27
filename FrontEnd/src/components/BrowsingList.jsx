@@ -7,7 +7,7 @@ import { Pagination } from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 import { PortConnectToBackEnd } from '..';
 import { Link } from 'react-router-dom';
-import { GetDiscBrowsingTotal, GetDiscBrowsing1, GetDiscBrowsing2, loader } from '../ListOfLinks';
+import { GetBrowsingPage, BrowsingPageSpecific, BrowsingPageSpecificLeast } from '../ListOfLinks';
 /* eslint no-useless-concat: 0 */
 
 export const BrowsingList = (props) => {
@@ -41,14 +41,15 @@ export const BrowsingList = (props) => {
 
 
     const sortFetching = async (number, location, sortPrice) => {//http://localhost:3001/sortprice/descending/item/15/page/1
-        await axios.get("http://localhost:" + portFetch + "/leastretail").then((res) => {
+        await axios.get(GetBrowsingPage).then((res) => {
+            console.log(res);
             setTotalItem(res.data.length - 1);
             setCountPage(Math.round(res.data.length / number));
 
         })
         if (sortPrice != "none") {
-
-             await axios.get("http://localhost:" + portFetch +"/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)).then((res) => {
+            //"http://localhost:" + portFetch +"/sortprice/" + sortPrice + "/item/" + number + "/page/" + (location)
+            await axios.get(BrowsingPageSpecific(sortPrice,number,location)).then((res) => {
               //   console.log(res.data);
                  if ((number * location !== totalItem) && (location === countPage)) {
                      setTotalRest(totalItem - (number * (countPage - 1)));
@@ -74,8 +75,8 @@ export const BrowsingList = (props) => {
         }
 
         else {
-
-            await axios.get("http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location).then((res) => {
+            //"http://localhost:" + portFetch + "/leastretail/item/" + number + "/page/" + location
+            await axios.get(BrowsingPageSpecificLeast(number,location)).then((res) => {
                //  console.log(res.data);
                 if ((number * location !== totalItem) && (location === countPage)) {
                     setTotalRest(totalItem - (number * (countPage - 1)));
