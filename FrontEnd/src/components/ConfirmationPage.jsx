@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TokenHeader, OrderHistoryLink,/*loader*/ } from '../ListOfLinks';
+import { PurchaseHistory } from '../ListOfLinks';
 import FireBaseSetup from '../FireBaseSetup';
 import axios from 'axios';
 
@@ -35,7 +35,7 @@ export const ConfirmationPage = () => {
     );
 
     const fetch = async (e) => {
-        await axios.post("http://localhost:3001/purchasehistory",{ email: e }).then((res) => {
+        await axios.post(PurchaseHistory, { email: e }).then((res) => {
             console.log(res);
             console.log(res.data[(res.data.length - 1)]);
             setProductInfo(res.data[(res.data.length - 1)].itemArray);

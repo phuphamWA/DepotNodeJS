@@ -1,6 +1,6 @@
 import React, { useState, /*useEffect*/ } from 'react';
 import axios from 'axios';
-import { RemoveCart } from '../ListOfLinks';
+import { RemoveCart, UpdateCartt } from '../ListOfLinks';
 
 export var displayRandom = () => {
     var rand = Math.floor(Math.random() * 100);
@@ -9,15 +9,16 @@ export var displayRandom = () => {
 }
 export const CartItem = (props) => {
     const [count, setCount] = useState(props.value.quantity);
-    const [totalCost, setTotalCost] = useState('');
+    const [totalCost, setTotalCost] = useState(0);
     const [/*removeItem*/, setRemoveItem] = useState(false);
 
     const UpdateCart = async () => {
-        var upTotalCost = document.getElementById('totalcost').innerHTML;
+/*        var upTotalCost = document.getElementById('totalcost').innerHTML;
         console.log(totalCost);
-    
-        axios.post(UpdateCart, { email: props.email, quantity: count, totalCost: upTotalCost, propsOne: props.value.offering_key });
-      //  window.location.replace('/cart');
+    */
+        console.log(totalCost);
+        await axios.post(UpdateCartt, { email: props.email, quantity: count, totalCost: totalCost, propsOne: props.value.offering_key });
+        window.location.replace('/cart');
     }
 
     const presentCounter = (<div type="number" className="h-10 font-semibold flex justify-center text-gray-500 w-1/3 items-center text-2xl" > {count} </div>)

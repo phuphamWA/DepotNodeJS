@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import '../css/mainTailwind.css';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
-import { GetVendors, loader } from '../ListOfLinks';
+import { OtherVendorPage, loader } from '../ListOfLinks';
 import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import { Carousel } from "react-responsive-carousel";
-import { PortConnectToBackEnd } from '..';
+
 export const Vendors = () => {
     let { idv } = useParams();
     
@@ -23,7 +23,7 @@ export const Vendors = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load]);
     const fetching = async (idv) => {
-        await axios.get("http://localhost:" + PortConnectToBackEnd + "/vendors/" + idv).then((res) => {
+        await axios.get(OtherVendorPage(idv)).then((res) => {
             console.log(res);
             setTotalVendor(res.data.length);
             setProductName(res.data[0].Product_name);

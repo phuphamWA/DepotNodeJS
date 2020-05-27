@@ -6,6 +6,7 @@ import '../css/mainStyle.css';
 
 import { UserManageMobileProvider } from './UserManageContext';
 import { OrderHistory } from './OrderHistory';
+import { ManageUser, InsertUser, PurchaseHistory, PostUser } from '../ListOfLinks';
 //import NavTitle from '../NavTitle';
 
 export const ManagePage = (props) => {
@@ -64,7 +65,7 @@ export const ManagePage = (props) => {
     const mongoFetch = async (uidValue) => {
         var initValue = [];
         var found = false;
-        await axios.get("http://localhost:3001/user").then((res) => {
+        await axios.get(ManageUser).then((res) => {
             console.log(res.data);
             for (var i = 0; i < res.data.length; i++) {
                 initValue.push({
@@ -117,7 +118,7 @@ export const ManagePage = (props) => {
             });
             if (found === false) {
 
-                axios.post('http://localhost:3001/insert-user', {
+                axios.post(InsertUser, {
                     id: uidInsert,
                     email: emailInser,
                 }).then((res) => {
@@ -125,7 +126,7 @@ export const ManagePage = (props) => {
                 })
             }
         })
-        await axios.post("http://localhost:3001/purchasehistory", { email: email }).then(res => {
+        await axios.post(PurchaseHistory, { email: email }).then(res => {
             console.log(res.data);
             setHistoryItem(res.data);
         })
@@ -158,7 +159,7 @@ export const ManagePage = (props) => {
         var phone2Typing = document.getElementById('phone2_input');
         var ext2Typing = document.getElementById('ext2_input');
 
-        await axios.post('http://localhost:3001/post-user', {
+        await axios.post(PostUser, {
             id: uid,
             objEmail: email,
             objFirstName: firstnameTyping.value === '' ? firstnameTyping.placeholder : firstnameTyping.value,

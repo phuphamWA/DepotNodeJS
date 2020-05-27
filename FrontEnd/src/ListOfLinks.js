@@ -9,7 +9,7 @@ export const BrowsingPageSpecific = (sortPrice, number, location) => {
 export const BrowsingPageSpecificLeast = (number, location) => {
     return env + "/leastretail/item/" +number + "/page/" + location;
 } 
-//export const GetHomeRandom = env + "/catalog-api/products/home";
+
 export const GetHomeRandom = env + "/randomitem";
 
 export const ProductPage = (offerID) => {
@@ -19,8 +19,17 @@ export const CartAdding = env + "/cartadding";
 export const CountCart = env + "/countcart";
 export const ClickConfirm = env + "/confirmation";
 export const EmptyCart = env + "/emptycart";
-export const UpdateCart = env + "/updatecart";
+export const UpdateCartt = env + "/updatecart";
 export const RemoveCart = env + "/removecart";
+
+export const PurchaseHistory = env + "/purchasehistory";
+export const ManageUser = env + "/user";
+export const InsertUser = env + "/insert-user";
+export const PostUser = env + "/post-user";
+
+export const OtherVendorPage = (idv) => {
+    return env + "/vendors/" + idv;
+} 
 /*export const TokenHeader = (tokenID) => {
     var config = {
         headers: {

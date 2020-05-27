@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Collapse } from 'react-collapse';
 import FireBaseSetup from '../FireBaseSetup';
 import { CartItemCheckOut } from './CartItem';
-import {loader, CountCart } from '../ListOfLinks';
+import {loader, CountCart, EmptyCart, ClickConfirm } from '../ListOfLinks';
 
 export const CheckOut = () => {
     const [email,setEmail] = useState("");
@@ -54,13 +54,10 @@ export const CheckOut = () => {
         }
       
         console.log(invoiceObj);
-        axios.post("http://localhost:3001/confirmation",           
-            { invoiceObj, email: email }).then(() => {
-                axios.post("http://localhost:3001/emptycart", { email: email });
-
-
-                window.location.assign('/confirmation')
-            });
+        axios.post(ClickConfirm, { invoiceObj, email: email });  
+        axios.post(EmptyCart, { email: email });
+       window.location.assign('/confirmation')
+         
 
     }
 
