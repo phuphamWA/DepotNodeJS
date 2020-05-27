@@ -9,7 +9,8 @@ import pic1 from '../Pics/image15.jpg';
 import pic2 from '../Pics/image16.jpg';
 import FireBaseSetup from '../FireBaseSetup';
 import { loader, ProductPage, CartAdding } from '../ListOfLinks';
-import { PortConnectToBackEnd } from '..';
+import Tooltip from 'react-tooltip-lite';
+
 
 export const Product = (props) => {
     let { id } = useParams();
@@ -204,9 +205,19 @@ export const Product = (props) => {
                         <div id="quantity" className="w-1/2 justify-center">
                             {counters}
                         </div>
+                        
                         <div className="flex justify-center w-1/2 lg:w-3/5">
-                            <button onClick={AddCartButton} className="flex justify-center m-20 rounded hover:bg-orange-400 border-2 border-orange-500 px-5 font-bold">Add to Cart</button>
-                        </div>
+                     
+                            <button onClick={AddCartButton} className="flex justify-center m-20 rounded hover:bg-orange-400 border-2 border-orange-500 px-5 font-bold">
+
+
+                                <Tooltip content={(<div className="bg-orange-500 text-base border-black border-2">
+                                    Need to add user information first before add item to a cart
+                                </div>)} direction="bottom">Add to Cart     </Tooltip>
+                            </button>
+                          
+                            </div>
+                   
                     </div>
                 </div>
             </div>

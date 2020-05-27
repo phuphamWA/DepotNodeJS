@@ -4,7 +4,8 @@ import { withRouter } from 'react-router';
 import { Auth } from '../src/authContext';
 import FireBaseSetup from './FireBaseSetup';
 import axios from 'axios';
-import { GetCart, TokenHeader, CountCart } from './ListOfLinks';
+import Tooltip from 'react-tooltip-lite';
+import { CountCart } from './ListOfLinks';
 
 export const NavTitle = (props) => {
     const [stateNav, setStateNave] = useState(null);
@@ -57,6 +58,44 @@ export const NavTitle = (props) => {
             </Link>
         </Fragment>)
     }
+    const cartIcon = () => {
+        if (email)
+            return (<Link to={'/cart'}>
+                <div className="flex mr-6">
+                    <svg className="h-8 w-8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70">
+                        <circle cx="82.5" cy="62.5" r="7.5" />
+                        <rect x="30" y="45" width="60" height="5" />
+                        <circle cx="37.5" cy="62.5" r="7.5" />
+                        <rect width="15" height="5" />
+                        <polygon points="35 50 30 50 10 0 15 0 35 50" />
+                    </svg>
+                    <div className="text-white text-sm flex font-bold -ml-4"> {countItem}</div>
+                </div>
+            </Link>);
+        else {
+            return (
+                <Tooltip content={(
+                    <div className="bg-blue-200 text-2xl">
+                        Need to signin and add user information first 
+                    </div>
+                )} direction="left">
+                
+                
+                  <button className="flex mr-6" disabled>
+                        <svg className="h-8 w-8" fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70">
+                            <circle cx="82.5" cy="62.5" r="7.5" />
+                            <rect x="30" y="45" width="60" height="5" />
+                            <circle cx="37.5" cy="62.5" r="7.5" />
+                            <rect width="15" height="5" />
+                            <polygon points="35 50 30 50 10 0 15 0 35 50" />
+                        </svg>
+                        <div className="text-white text-sm flex font-bold -ml-4"> {countItem}</div>
+                    </button>
+                </Tooltip>
+                )
+        }
+
+    }
     return (
         <nav className="flex px-5">
             <div className="lg:hidden pt-4 pr-4">
@@ -71,18 +110,7 @@ export const NavTitle = (props) => {
             </div>
             <div className="flex p-4">
 
-                <Link to={'/cart'}>         
-                        <div className="flex mr-6">
-                            <svg className="h-8 w-8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70">
-                                <circle cx="82.5" cy="62.5" r="7.5" />
-                                <rect x="30" y="45" width="60" height="5" />
-                                <circle cx="37.5" cy="62.5" r="7.5" />
-                                <rect width="15" height="5" />
-                                <polygon points="35 50 30 50 10 0 15 0 35 50" />
-                            </svg>
-                            <div className="text-white text-sm flex font-bold -ml-4"> {countItem}</div>
-                        </div> 
-                </Link>
+                {cartIcon()}
 
                 <div>{buttonManage}</div>
             </div>
