@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/loader/three-dot.css';
 
-const env = 'http://nodejs-env.eba-wmtkyt58.us-west-2.elasticbeanstalk.com';
+const env = 'http://ec2-54-244-76-83.us-west-2.compute.amazonaws.com:3000';
 export const GetBrowsingPage = env + "/leastretail";
 export const BrowsingPageSpecific = (sortPrice, number, location) => {
     return env + "/sortprice/" + sortPrice + "/item/" + number + "/page/" + location;
